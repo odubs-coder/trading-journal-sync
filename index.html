@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trading Journal</title>
+<meta name="theme-color" content="#161C42">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Journal">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23161C42'/%3E%3Cpath d='M10 44 L22 30 L32 36 L54 16' stroke='%234FE3FF' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23161C42'/%3E%3Cpath d='M10 44 L22 30 L32 36 L54 16' stroke='%234FE3FF' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Trading%20Journal%22%2C%22short_name%22%3A%22Journal%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23161C42%22%2C%22theme_color%22%3A%22%23161C42%22%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#161C42;--glass:rgba(255,255,255,.062);--glass2:rgba(255,255,255,.10);
+  --line:rgba(255,255,255,.13);--line2:rgba(255,255,255,.24);
+  --vio:#9B7DFF;--cyan:#4FE3FF;--mint:#3FF5C0;--rose:#FF6B8A;--sun:#FFCE7A;
+  --ink:#F4F6FF;--mid:#B4BEE4;--dim:#8590C4;
+  --grad:linear-gradient(120deg,#9B7DFF,#4FE3FF 55%,#3FF5C0);
+  --f:"Outfit",system-ui,-apple-system,sans-serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:26px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);font-family:var(--f);color:var(--ink);font-size:15.5px;line-height:1.55;
+  min-height:100vh;padding-bottom:52px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.aur{position:fixed;inset:-20%;z-index:-2;pointer-events:none;filter:blur(60px);opacity:.85}
+.aur b{position:absolute;display:block;border-radius:50%}
+.b1{width:56vw;height:56vw;background:radial-gradient(circle,#7C5CFF,transparent 68%);top:-8%;left:-12%;animation:f1 24s ease-in-out infinite alternate}
+.b2{width:48vw;height:48vw;background:radial-gradient(circle,#3FD9FF,transparent 68%);top:14%;right:-14%;animation:f2 30s ease-in-out infinite alternate}
+.b3{width:52vw;height:52vw;background:radial-gradient(circle,#2BE8B0,transparent 70%);bottom:-10%;left:8%;animation:f3 27s ease-in-out infinite alternate}
+.b4{width:34vw;height:34vw;background:radial-gradient(circle,#FF7FA6,transparent 70%);bottom:22%;right:6%;opacity:.62;animation:f4 33s ease-in-out infinite alternate}
+@keyframes f1{to{transform:translate(9vw,7vh) scale(1.16)}}
+@keyframes f2{to{transform:translate(-8vw,11vh) scale(1.12)}}
+@keyframes f3{to{transform:translate(11vw,-8vh) scale(1.2)}}
+@keyframes f4{to{transform:translate(-6vw,-9vh) scale(1.25)}}
+.veil{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(18,22,56,.55),rgba(13,16,44,.80))}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+.m{font-family:var(--m);font-variant-numeric:tabular-nums}
+.wrap{max-width:960px;margin:0 auto;padding:0 15px}
+.mint{color:var(--mint)}.rose{color:var(--rose)}.sun{color:var(--sun)}.vio{color:var(--vio)}
+
+header{position:sticky;top:0;z-index:30;background:rgba(22,28,66,.74);
+  backdrop-filter:blur(26px) saturate(150%);-webkit-backdrop-filter:blur(26px) saturate(150%);
+  border-bottom:1px solid rgba(255,255,255,.10)}
+.hin{max-width:960px;margin:0 auto;padding:14px 15px 0}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wm{display:flex;align-items:baseline;gap:8px;min-width:0}
+.wm .a{font-weight:300;font-size:22px;color:var(--mid)}
+.wm .b{font-weight:600;font-size:22px;letter-spacing:-.02em;background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hbtns{display:flex;gap:7px;flex:0 0 auto}
+.hbtn{font-size:12.5px;font-weight:500;color:var(--mid);border:1px solid var(--line);
+  border-radius:99px;padding:7px 13px;transition:.2s;display:flex;align-items:center;gap:6px;background:var(--glass)}
+.hbtn:hover{color:var(--ink);border-color:var(--line2);background:var(--glass2)}
+.hbtn i{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 9px var(--mint);flex:0 0 auto}
+.hbtn.stale i{background:var(--sun);box-shadow:0 0 9px var(--sun);animation:bl 1.5s infinite}
+.hbtn.bad i{background:var(--rose);box-shadow:0 0 9px var(--rose)}
+.hbtn.off i{background:var(--dim);box-shadow:none}
+.hbtn.on i{background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:bl 2s infinite}
+@keyframes bl{50%{opacity:.25}}
+.acsel{display:flex;align-items:center;gap:11px;width:100%;margin-top:12px;
+  background:linear-gradient(115deg,rgba(155,125,255,.24),rgba(79,227,255,.10));
+  border:1px solid var(--line2);border-radius:20px;padding:11px 15px;transition:.2s;text-align:left}
+.acsel:hover{border-color:var(--vio)}
+.acsel .nm{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.acsel .bl{font-family:var(--m);font-size:12.5px;color:var(--mid);margin-top:1px;display:block}
+.acsel .cv{margin-left:auto;color:var(--dim);font-size:13px}
+.badge{font-size:10px;font-weight:600;letter-spacing:.07em;padding:3px 9px;border-radius:99px;flex:0 0 auto}
+.badge.demo{background:rgba(255,206,122,.22);color:var(--sun)}
+.badge.live{background:rgba(63,245,192,.20);color:var(--mint)}
+.tabs{display:flex;gap:3px;margin-top:13px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;font-weight:500;font-size:14px;color:var(--dim);padding:11px 14px;
+  border-radius:16px 16px 0 0;border-bottom:2px solid transparent;transition:.22s;white-space:nowrap}
+.tab.on{color:var(--ink);font-weight:600;border-bottom-color:var(--vio);
+  background:linear-gradient(180deg,rgba(155,125,255,.04),rgba(155,125,255,.20))}
+.tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  margin-left:5px;vertical-align:middle;box-shadow:0 0 8px var(--cyan)}
+
+.view{display:none;padding-top:20px}
+.view.on{display:block;animation:in .38s cubic-bezier(.2,.8,.3,1) both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:14px;
+  backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
+  box-shadow:0 1px 0 rgba(255,255,255,.10) inset,0 20px 46px -26px rgba(0,0,0,.65)}
+.ch{font-size:12.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--dim);
+  margin-bottom:15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ch em{font-style:normal;font-size:12px;letter-spacing:0;text-transform:none;color:var(--dim);font-weight:400}
+
+.banner{display:flex;align-items:center;gap:13px;padding:15px 17px;border-radius:22px;
+  border:1px solid rgba(255,206,122,.42);background:rgba(255,206,122,.13);margin-bottom:14px}
+.banner .t{flex:1;font-size:14px;line-height:1.5}
+.banner .t b{color:var(--sun);font-weight:600}
+.banner button{flex:0 0 auto;font-size:13.5px;font-weight:600;color:#161C42;background:var(--sun);border-radius:99px;padding:10px 17px}
+.banner.bad{border-color:rgba(255,107,138,.5);background:rgba(255,107,138,.13)}
+.banner.bad .t b{color:var(--rose)}
+.banner.bad button{background:var(--rose);color:#fff}
+.banner.info{border-color:rgba(79,227,255,.45);background:rgba(79,227,255,.12)}
+.banner.info .t b{color:var(--cyan)}
+.banner.info button{background:var(--cyan);color:#161C42}
+
+.hero{background:linear-gradient(125deg,rgba(155,125,255,.30),rgba(79,227,255,.14) 52%,rgba(63,245,192,.10));
+  border:1px solid var(--line2);border-radius:32px;padding:24px 22px;margin-bottom:14px;text-align:center;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.hero-k{font-size:12.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--mid)}
+.hero-v{font-family:var(--m);font-weight:600;font-size:clamp(34px,10vw,52px);letter-spacing:-.035em;line-height:1.04;margin-top:8px}
+.hero-s{font-size:13.5px;color:var(--mid);margin-top:9px}
+.hero-s b{font-weight:600}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stats.g2{grid-template-columns:repeat(2,1fr)}
+.stats.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:560px){.stats.g4{grid-template-columns:repeat(2,1fr)}}
+.st{background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:14px 12px;text-align:center}
+.st-k{font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.st-v{font-family:var(--m);font-weight:600;font-size:21px;margin-top:6px;letter-spacing:-.025em}
+.st-s{font-size:11px;color:var(--dim);margin-top:3px}
+
+.chart{width:100%;height:190px;display:block}
+.eq{fill:none;stroke:url(#g1);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 3px 14px rgba(155,125,255,.75))}
+.eqf{fill:url(#g2)}
+.gl{stroke:rgba(255,255,255,.07);stroke-width:1}
+.zl{stroke:rgba(255,255,255,.26);stroke-width:1;stroke-dasharray:2 5}
+.ct{font-family:var(--m);font-size:10.5px;fill:var(--dim)}
+
+.bars{display:flex;flex-direction:column;gap:11px}
+.bar{display:grid;grid-template-columns:1fr 84px auto;gap:12px;align-items:center;font-size:14px}
+.bl2{color:var(--mid);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bl2 b{font-weight:400;color:var(--dim);font-size:12px}
+.bt{height:9px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+.bt i{display:block;height:100%;border-radius:99px;transition:width .9s cubic-bezier(.2,.8,.3,1)}
+.bt i.p{background:linear-gradient(90deg,rgba(63,245,192,.45),var(--mint));box-shadow:0 0 12px -2px var(--mint)}
+.bt i.n{background:linear-gradient(90deg,rgba(255,107,138,.45),var(--rose));box-shadow:0 0 12px -2px var(--rose)}
+.bv{font-family:var(--m);font-size:13.5px;font-weight:500;min-width:54px;text-align:right}
+
+/* live trade */
+.live{border:1px solid rgba(79,227,255,.5);background:linear-gradient(140deg,rgba(79,227,255,.16),rgba(155,125,255,.09));
+  border-radius:24px;padding:18px;margin-bottom:11px;position:relative;overflow:hidden}
+.live::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);animation:scan 2.6s linear infinite}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.live-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.live-h .s{font-weight:600;font-size:19px}
+.live-tag{font-size:10.5px;font-weight:600;letter-spacing:.08em;padding:3px 10px;border-radius:99px;
+  background:rgba(79,227,255,.22);color:var(--cyan)}
+.lvgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:520px){.lvgrid{grid-template-columns:repeat(2,1fr)}}
+.lv{text-align:center}
+.lv .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.lv .v{font-family:var(--m);font-weight:600;font-size:16px;margin-top:3px}
+.rrbar{height:10px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden;display:flex;margin-bottom:12px}
+.rrbar i{display:block;height:100%}
+.rrbar i.r1{background:linear-gradient(90deg,var(--rose),rgba(255,107,138,.4))}
+.rrbar i.r2{background:linear-gradient(90deg,rgba(63,245,192,.4),var(--mint))}
+
+/* events inbox */
+.ev{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:18px;
+  border:1px solid var(--line);background:var(--glass);margin-bottom:9px}
+.ev .l{flex:1;min-width:0}
+.ev .t1{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ev .t2{font-family:var(--m);font-size:12px;color:var(--dim);margin-top:3px}
+.ev .go{font-size:12.5px;font-weight:600;border:1px solid var(--vio);color:var(--vio);
+  border-radius:99px;padding:7px 14px;flex:0 0 auto;background:rgba(155,125,255,.14)}
+.kind{font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 9px;border-radius:99px}
+.kind.entry{background:rgba(79,227,255,.22);color:var(--cyan)}
+.kind.exit{background:rgba(255,206,122,.22);color:var(--sun)}
+.kind.note{background:rgba(255,255,255,.10);color:var(--mid)}
+
+/* calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+.cal-nav button{width:42px;height:42px;border-radius:99px;border:1px solid var(--line);color:var(--mid);font-size:18px;background:var(--glass)}
+.cal-mon{text-align:center;flex:1}
+.cal-mon .t{font-weight:600;font-size:18px}
+.cal-mon .s{font-family:var(--m);font-size:13.5px;margin-top:2px}
+.cal-hd{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}
+.cal-hd div{text-align:center;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+.cal{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.cd{aspect-ratio:1/1.04;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;
+  transition:.22s cubic-bezier(.2,.8,.3,1);position:relative;overflow:hidden}
+.cd.void{border-color:transparent;background:none}
+.cd .dn{font-family:var(--m);font-size:11px;color:var(--dim);position:absolute;top:5px;left:8px}
+.cd .pv{font-family:var(--m);font-weight:600;font-size:clamp(10.5px,2.8vw,14px);letter-spacing:-.03em;margin-top:7px}
+.cd .tn{font-size:10px;color:var(--dim)}
+.cd.has{cursor:pointer}
+.cd.has:hover{transform:translateY(-3px) scale(1.03)}
+.cd.win{border-color:rgba(63,245,192,.6);box-shadow:0 4px 18px -8px var(--mint)}
+.cd.win .pv{color:var(--mint)}.cd.win .dn{color:rgba(63,245,192,.75)}
+.cd.loss{border-color:rgba(255,107,138,.6);box-shadow:0 4px 18px -8px var(--rose)}
+.cd.loss .pv{color:var(--rose)}.cd.loss .dn{color:rgba(255,107,138,.75)}
+.cd.flat{border-color:var(--line2)}
+.cd.today{outline:2px solid var(--vio);outline-offset:-2px}
+.cd .open{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.legend{display:flex;gap:15px;justify-content:center;margin-top:16px;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend i{width:13px;height:13px;border-radius:5px;border:1px solid}
+.legend i.g{border-color:rgba(63,245,192,.65);background:rgba(63,245,192,.3)}
+.legend i.r{border-color:rgba(255,107,138,.65);background:rgba(255,107,138,.3)}
+.legend i.n{border-color:var(--line2);background:rgba(255,255,255,.05)}
+
+.rule{display:flex;align-items:flex-start;gap:13px;padding:16px;border-radius:20px;border:1px solid var(--line);background:var(--glass);margin-bottom:10px}
+.rule .n{font-family:var(--m);font-size:12.5px;color:var(--vio);padding-top:2px;font-weight:600}
+.rule .b{flex:1;min-width:0}
+.rule .tx{font-size:15px;font-weight:500;line-height:1.45}
+.rule .st2{font-family:var(--m);font-size:12.5px;color:var(--dim);margin-top:6px}
+.rule .x{color:var(--dim);font-size:21px;line-height:1;padding:0 4px}
+.rule .x:hover{color:var(--rose)}
+.rule.clean{border-color:rgba(63,245,192,.38)}
+.rule.costly{border-color:rgba(255,107,138,.45)}
+.sugg{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sg{font-size:13px;padding:8px 14px;border-radius:99px;border:1px dashed var(--line2);color:var(--dim)}
+.sg:hover{border-style:solid;border-color:var(--vio);color:var(--ink)}
+
+.f{margin-bottom:16px}
+.f label{display:block;font-size:12.5px;font-weight:500;color:var(--mid);margin-bottom:8px}
+.f input,.f select,.f textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid var(--line);
+  border-radius:18px;padding:13px 16px;outline:none;transition:.2s}
+.f input.m,.f select,.f textarea.m{font-family:var(--m)}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--vio);background:rgba(155,125,255,.14);box-shadow:0 0 0 4px rgba(155,125,255,.18)}
+.f textarea{min-height:96px;resize:vertical;line-height:1.7;border-radius:22px}
+.f input::placeholder,.f textarea::placeholder{color:var(--dim)}
+.f .hint{font-size:12px;color:var(--dim);margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.two>*,.three>*{min-width:0}
+.f,.f input,.f select,.f textarea{min-width:0;max-width:100%}
+/* Safari and iOS give date and time inputs their own intrinsic width,
+   which ignores the grid column unless it's reset */
+input[type=date],input[type=time]{
+  -webkit-appearance:none;appearance:none;
+  display:block;width:100%;min-width:0;padding-right:12px;
+  text-align:left;font-size:15px}
+input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}
+input[type=date]::-webkit-calendar-picker-indicator{
+  filter:invert(72%) sepia(18%) saturate(600%) hue-rotate(190deg);
+  opacity:.75;margin-left:2px;padding:0}
+@media(max-width:520px){.three{grid-template-columns:1fr 1fr}.three>*:last-child{grid-column:1/-1}}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 52%,calc(100% - 14px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:38px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;padding:13px 6px;font-weight:600;font-size:14.5px;color:var(--dim);
+  border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.05);transition:.2s}
+.seg button.on{background:rgba(155,125,255,.24);border-color:var(--vio);color:#fff}
+.seg button.on[data-v=Long]{background:rgba(63,245,192,.20);border-color:var(--mint);color:var(--mint)}
+.seg button.on[data-v=Short]{background:rgba(255,107,138,.20);border-color:var(--rose);color:var(--rose)}
+.seg button.on[data-v=Demo]{background:rgba(255,206,122,.20);border-color:var(--sun);color:var(--sun)}
+.seg button.on[data-v=Live]{background:rgba(63,245,192,.20);border-color:var(--mint);color:var(--mint)}
+.seg.sm button{padding:10px 6px;font-size:13.5px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tg{font-size:13.5px;padding:8px 15px;border-radius:99px;border:1px solid var(--line);color:var(--mid);background:rgba(255,255,255,.04);transition:.18s}
+.tg:hover{border-color:var(--line2);color:var(--ink)}
+.tg.on{background:linear-gradient(120deg,rgba(155,125,255,.38),rgba(79,227,255,.26));border-color:var(--vio);color:#fff}
+.tg.brk.on{background:rgba(255,107,138,.26);border-color:var(--rose);color:#FFD3DC}
+.addrow{display:flex;gap:9px;margin-top:11px}
+.addrow input{flex:1;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:99px;padding:11px 17px;outline:none;font-size:13.5px}
+.fold{border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:16px}
+.fold>summary{padding:14px 17px;font-weight:600;font-size:14.5px;cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.04)}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"+";color:var(--dim);font-size:19px;font-weight:400}
+.fold[open]>summary::after{content:"−"}
+.fold .in{padding:16px 17px 4px}
+
+.drop{border:1.5px dashed var(--line2);border-radius:24px;padding:28px 16px;text-align:center;background:rgba(255,255,255,.03)}
+.drop:hover,.drop.over{border-color:var(--vio);background:rgba(155,125,255,.13)}
+.drop-t{font-weight:600;font-size:15.5px}
+.drop-s{font-size:13px;color:var(--dim);margin-top:6px}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin-top:12px}
+.shot{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:#111740;border:1px solid var(--line)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.shot button{position:absolute;top:6px;right:6px;width:25px;height:25px;border-radius:99px;background:rgba(15,19,50,.9);color:var(--rose);font-size:16px;display:grid;place-items:center}
+
+.btn{font-weight:600;font-size:15.5px;padding:15px 24px;border-radius:99px;transition:.22s;width:100%}
+.btn.go{background:var(--grad);color:#141A3D;box-shadow:0 8px 26px -10px var(--vio)}
+.btn.go:hover{filter:brightness(1.08)}
+.btn.gh{border:1px solid var(--line);color:var(--mid);background:var(--glass)}
+.btn.gh:hover{color:var(--ink);border-color:var(--line2)}
+.btn.rd{border:1px solid rgba(255,107,138,.5);color:var(--rose);background:rgba(255,107,138,.10)}
+.btn.cy{border:1px solid rgba(79,227,255,.55);color:var(--cyan);background:rgba(79,227,255,.13)}
+.btn.sm{width:auto;padding:10px 18px;font-size:13.5px}
+.btn.full{width:100%}
+.acts{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:10px}
+
+.filters{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap}
+.filters input,.filters select{background:rgba(255,255,255,.07);border:1px solid var(--line);
+  border-radius:99px;padding:11px 16px;outline:none;font-size:14px;min-width:0}
+.filters input{flex:1;min-width:130px}
+
+.tr{background:var(--glass);border:1px solid var(--line);border-radius:24px;margin-bottom:11px;overflow:hidden;transition:.22s}
+.tr:hover{border-color:var(--line2)}
+.tr.win{box-shadow:inset 3px 0 0 var(--mint)}
+.tr.loss{box-shadow:inset 3px 0 0 var(--rose)}
+.tr.openpos{box-shadow:inset 3px 0 0 var(--cyan)}
+.trh{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;cursor:pointer}
+.trl{min-width:0}
+.tr1{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.sym{font-weight:600;font-size:17.5px}
+.pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px}
+.pill.L{background:rgba(63,245,192,.20);color:var(--mint)}
+.pill.S{background:rgba(255,107,138,.20);color:var(--rose)}
+.pill.brk{background:rgba(255,107,138,.20);color:var(--rose)}
+.pill.tv{background:rgba(79,227,255,.20);color:var(--cyan)}
+.pill.todo{background:rgba(255,206,122,.22);color:var(--sun)}
+.tr2{font-size:13px;color:var(--dim);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trr{text-align:right;flex:0 0 auto}
+.pnl{font-family:var(--m);font-weight:600;font-size:19.5px;letter-spacing:-.03em}
+.rr{font-family:var(--m);font-size:12.5px;color:var(--dim);margin-top:2px}
+.trb{display:none;padding:0 18px 18px}
+.tr.open .trb{display:block;animation:in .28s ease both}
+.nar{margin-top:16px}
+.nar h5{font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--vio);margin-bottom:7px}
+.nar h5.bad{color:var(--rose)}
+.nar p{font-size:14.5px;line-height:1.75;color:var(--mid);white-space:pre-wrap}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:11px;margin-top:14px}
+.kv div{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.kv b{display:block;font-family:var(--m);font-size:14px;font-weight:500;color:var(--ink);text-transform:none;margin-top:3px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:12.5px;padding:5px 13px;border-radius:99px;background:rgba(155,125,255,.22);color:#DCD2FF}
+.chip.bad{background:rgba(255,107,138,.22);color:#FFCBD6}
+
+.empty{text-align:center;padding:46px 20px}
+.empty h4{font-size:20px;font-weight:600}
+.empty p{font-size:14.5px;color:var(--dim);margin:10px auto 20px;max-width:350px;line-height:1.7}
+
+.find{display:flex;gap:12px;padding:15px 16px;border-radius:20px;border:1px solid var(--line);
+  background:var(--glass);margin-bottom:10px}
+.find .ic{font-size:17px;flex:0 0 auto;line-height:1.3}
+.find .b{flex:1}
+.find .t{font-weight:600;font-size:15px}
+.find .d{font-size:13.5px;color:var(--mid);margin-top:4px;line-height:1.6}
+.find.good{border-color:rgba(63,245,192,.4)}
+.find.bad{border-color:rgba(255,107,138,.45)}
+.find.warn{border-color:rgba(255,206,122,.45)}
+
+.ov{position:fixed;inset:0;background:rgba(10,13,38,.72);backdrop-filter:blur(10px);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+@media(min-width:640px){.ov{align-items:center;padding:20px}}
+.sheet{width:100%;max-width:560px;background:linear-gradient(160deg,#2A3170,#1A2050);
+  border:1px solid var(--line2);border-radius:32px 32px 0 0;padding:22px 20px 30px;max-height:88vh;overflow-y:auto;
+  animation:sl .34s cubic-bezier(.2,.8,.3,1) both}
+@media(min-width:640px){.sheet{border-radius:32px}}
+@keyframes sl{from{transform:translateY(46px);opacity:0}to{transform:none;opacity:1}}
+.sh-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+.sh-t{font-weight:600;font-size:20px}
+.sh-x{font-size:23px;color:var(--dim);padding:0 5px}
+.sh-sec{font-size:11.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+  margin:22px 0 12px;padding-top:18px;border-top:1px solid var(--line)}
+.sh-sec:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.hs{display:flex;align-items:center;gap:12px;padding:15px 16px;border-radius:20px;border:1px solid var(--line);background:var(--glass);margin-bottom:14px}
+.hs i{width:10px;height:10px;border-radius:50%;flex:0 0 auto;background:var(--mint);box-shadow:0 0 11px var(--mint)}
+.hs.warn i{background:var(--sun);box-shadow:0 0 11px var(--sun)}
+.hs.bad i{background:var(--rose);box-shadow:0 0 11px var(--rose)}
+.hs.info i{background:var(--cyan);box-shadow:0 0 11px var(--cyan)}
+.hs .t{flex:1;font-size:14px;line-height:1.5}
+.hs .t b{display:block;font-weight:600;font-size:15px;margin-bottom:3px}
+.hs .t span{color:var(--dim)}
+.aclist{display:flex;flex-direction:column;gap:9px;margin-bottom:15px}
+.acrow{display:flex;align-items:center;gap:12px;padding:15px 16px;border-radius:20px;border:1px solid var(--line);background:var(--glass);text-align:left;width:100%}
+.acrow.on{border-color:var(--vio);background:rgba(155,125,255,.20)}
+.acrow .l{min-width:0;flex:1}
+.acrow .n{font-weight:600;font-size:15.5px;display:flex;align-items:center;gap:9px}
+.acrow .s{font-family:var(--m);font-size:12.5px;color:var(--mid);margin-top:3px}
+.acrow .e{font-size:12.5px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:6px 13px;flex:0 0 auto}
+.dayrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 15px;border-radius:18px;border:1px solid var(--line);background:var(--glass);margin-bottom:9px}
+.dayrow .l{min-width:0}
+.dayrow .s2{font-weight:600;font-size:15.5px}
+.dayrow .m2{font-size:12.5px;color:var(--dim);margin-top:2px}
+.dayrow .p2{font-family:var(--m);font-weight:600;font-size:16.5px;flex:0 0 auto}
+.prev{border:1px solid var(--vio);background:rgba(155,125,255,.16);border-radius:22px;padding:16px;margin-top:14px}
+.prev .t{font-weight:600;font-size:15px;margin-bottom:9px}
+.prev .l{font-family:var(--m);font-size:13px;color:var(--mid);line-height:1.75}
+.code{font-family:var(--m);font-size:11.5px;line-height:1.65;background:rgba(0,0,0,.32);border:1px solid var(--line);
+  border-radius:16px;padding:14px;color:var(--mid);white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto}
+
+.dlg{position:fixed;inset:0;background:rgba(10,13,38,.80);backdrop-filter:blur(12px);z-index:80;display:none;align-items:center;justify-content:center;padding:22px}
+.dlg.on{display:flex}
+.dlg .box{width:100%;max-width:400px;background:linear-gradient(160deg,#2C3378,#1B2154);border:1px solid var(--line2);
+  border-radius:28px;padding:24px;animation:pop .3s cubic-bezier(.2,.9,.3,1) both}
+@keyframes pop{from{transform:scale(.93);opacity:0}to{transform:none;opacity:1}}
+.dlg h4{font-size:19px;font-weight:600}
+.dlg p{font-size:14.5px;color:var(--mid);line-height:1.65;margin-top:10px}
+.dlg .row{display:flex;gap:10px;margin-top:22px}
+.dlg .row button{flex:1}
+.lb{position:fixed;inset:0;background:rgba(10,13,38,.96);z-index:90;display:none;place-items:center;padding:18px}
+.lb.on{display:grid}
+.lb img{max-width:100%;max-height:86vh;object-fit:contain;border-radius:18px}
+.lb button{position:absolute;top:18px;right:18px;font-size:14px;font-weight:600;border:1px solid var(--line2);border-radius:99px;padding:9px 18px;background:rgba(22,28,66,.85)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,110px);z-index:95;
+  background:linear-gradient(125deg,#3A3080,#1E2760);border:1px solid var(--vio);border-radius:99px;
+  padding:14px 24px;font-size:14.5px;font-weight:500;transition:transform .36s cubic-bezier(.2,.8,.3,1);max-width:88vw;text-align:center}
+.toast.on{transform:translate(-50%,0)}
+/* login */
+#gate{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;
+  padding:22px;overflow-y:auto;
+  background:
+    radial-gradient(58% 42% at 18% 0%,rgba(124,92,255,.34),transparent 66%),
+    radial-gradient(52% 40% at 92% 18%,rgba(63,217,255,.22),transparent 66%),
+    radial-gradient(62% 46% at 50% 106%,rgba(43,232,176,.18),transparent 66%),
+    #141A3D}
+/* the journal is fully out of the way while signing in */
+body.gated header,body.gated .wrap{display:none}
+body.gated{overflow:hidden}
+#gate.on{display:flex}
+.gbox{width:100%;max-width:400px;text-align:center;padding:8px 0 24px}
+.gmark{font-weight:300;font-size:30px;color:var(--mid);letter-spacing:-.02em;line-height:1.15}
+.gmark b{display:block;font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gsub{font-size:14px;color:var(--dim);margin-top:10px}
+.gcard{background:var(--glass);border:1px solid var(--line);border-radius:28px;padding:22px;margin-top:26px;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);text-align:left}
+.gwho{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.gu{display:flex;align-items:center;gap:12px;padding:14px 15px;border-radius:20px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);width:100%;text-align:left;transition:.2s}
+.gu:hover{border-color:var(--vio);background:rgba(155,125,255,.14)}
+.gu .nm2{font-weight:600;font-size:15.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gu .lk{font-size:12px;color:var(--dim);flex:0 0 auto}
+.avatar{width:34px;height:34px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);border:1px solid var(--line2)}
+.avatar svg{width:17px;height:17px;display:block}
+.avatar.founder{background:linear-gradient(135deg,rgba(255,206,122,.35),rgba(255,158,125,.2));border-color:rgba(255,206,122,.6)}
+.avatar.founder svg{fill:var(--sun)}
+.avatar svg{fill:var(--mid)}
+.avatar.sm{width:26px;height:26px}.avatar.sm svg{width:13px;height:13px}
+.rolechip{font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 9px;border-radius:99px;flex:0 0 auto}
+.rolechip.founder{background:rgba(255,206,122,.22);color:var(--sun)}
+.rolechip.user{background:rgba(255,255,255,.10);color:var(--mid)}
+.glink{background:none;border:none;color:var(--vio);font-size:13.5px;font-weight:500;padding:8px 0;width:100%;text-align:center}
+.gerr{font-size:13px;color:var(--rose);margin-top:10px;min-height:1em;text-align:center}
+.profbtn{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;
+  padding:5px 12px 5px 6px;background:var(--glass);transition:.2s;flex:0 0 auto}
+.profbtn:hover{border-color:var(--line2)}
+.profbtn .n2{font-size:12.5px;font-weight:500;color:var(--mid);max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.indrow{display:flex;align-items:center;gap:11px;padding:13px 15px;border-radius:18px;border:1px solid var(--line);
+  background:var(--glass);margin-bottom:9px}
+.indrow .l{flex:1;min-width:0}
+.indrow .n3{font-weight:600;font-size:15px}
+.indrow .s3{font-family:var(--m);font-size:12px;color:var(--dim);margin-top:3px}
+.indrow .x{color:var(--dim);font-size:20px;padding:0 4px}
+.indrow .x:hover{color:var(--rose)}
+.note{font-size:13px;color:var(--dim);line-height:1.65;margin-top:13px}
+/* ── narrow screens ── */
+@media(max-width:600px){
+  .hrow{flex-wrap:wrap;row-gap:10px}
+  .hbtns{width:100%;order:3;justify-content:space-between;gap:6px}
+  .hbtns>button{flex:1 1 0;justify-content:center;min-width:0;padding:8px 6px}
+  .profbtn{padding:5px 8px 5px 5px}
+  .profbtn .n2{max-width:none;flex:0 1 auto}
+  .hbtn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .filters{gap:8px}
+  .filters>select{flex:1 1 calc(50% - 4px);min-width:0}
+  .filters>input{flex:1 1 100%}
+  .st-v{font-size:18px}
+  .cd .pv{font-size:11px}
+  .cd .tn{font-size:9px}
+  .cd .dn{font-size:10px;top:4px;left:6px}
+  .card{padding:16px}
+  .hero{padding:20px 16px}
+  .lvgrid{gap:8px}
+  .bar{grid-template-columns:1fr 62px auto;gap:9px}
+  .bv{min-width:48px;font-size:12.5px}
+  .sheet{padding:20px 16px 26px}
+}
+@media(max-width:430px){
+  .two{grid-template-columns:1fr}
+  .three{grid-template-columns:1fr 1fr}
+  .three>*:last-child{grid-column:1/-1}
+}
+@media(max-width:380px){
+  .wm .a,.wm .b{font-size:19px}
+  .hbtns>button{font-size:11.5px;padding:8px 4px}
+  .tab{font-size:13px;padding:10px 10px}
+  .bar{grid-template-columns:1fr 48px auto}
+}
+/* long money figures must never spill out of their box */
+.st-v,.hero-v,.pnl,.bv,.cd .pv,.acsel .bl,.lv .v,.dayrow .p2{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{min-width:0}.trr{max-width:44%}
+.rolechip,.badge,.pill{white-space:nowrap}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.aur b,.live::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="aur"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b></div>
+<div class="veil"></div>
+
+<div id="gate"><div class="gbox">
+  <div class="gmark">Trading<b>Journal</b></div>
+  <div class="gsub" id="gSub">Sign in to open your journal</div>
+  <div class="gcard">
+    <div id="gStep1">
+      <div class="gwho" id="gUsers"></div>
+      <div id="gNone" class="note" style="display:none;margin:0 0 14px">
+        No journals on this device yet. If you've used the app elsewhere, bring a
+        backup across — a new profile starts empty.
+      </div>
+      <div class="stack">
+        <button class="btn go full" id="gNew">Create a new profile</button>
+        <button class="btn gh full" id="gRestoreBtn">I have a backup from another device</button>
+      </div>
+    </div>
+    <div id="gStep4" style="display:none">
+      <div class="f"><label>Paste your backup</label>
+        <textarea id="gBk" class="m" placeholder='{"app":"tape", …}' style="min-height:110px;font-size:11.5px"></textarea>
+        <div class="hint">On the other device: Backup → Copy backup to clipboard.</div></div>
+      <div id="gBkInfo"></div>
+      <div class="f"><label>Name this profile</label>
+        <input id="gBkName" placeholder="Your name" autocomplete="off"></div>
+      <div class="f"><label>Passcode <span style="color:var(--dim);font-weight:400">— optional</span></label>
+        <input id="gBkPass" type="password" placeholder="Leave blank for none" autocomplete="off"></div>
+      <div class="f"><label>Access code <span style="color:var(--dim);font-weight:400">— optional</span></label>
+        <input id="gBkCode" placeholder="Only if you have one" autocomplete="off"></div>
+      <button class="btn go full" id="gBkGo">Restore and sign in</button>
+      <button class="glink" id="gBack3">Back</button>
+    </div>
+    <div id="gStep2" style="display:none">
+      <div class="f"><label id="gLab">Your name</label>
+        <input id="gName" placeholder="What should the journal call you?" autocomplete="off"></div>
+      <div class="f"><label>Passcode <span style="color:var(--dim);font-weight:400">— optional</span></label>
+        <input id="gPass" type="password" placeholder="Leave blank for no passcode" autocomplete="off"></div>
+      <div class="f" id="gCodeWrap"><label>Access code <span style="color:var(--dim);font-weight:400">— optional</span></label>
+        <input id="gCode" placeholder="Only if you have one" autocomplete="off">
+        <div class="hint">Leave blank unless you were given one. It unlocks the Lab.</div></div>
+      <button class="btn go full" id="gCreate">Create profile</button>
+      <button class="glink" id="gBack">Back</button>
+    </div>
+    <div id="gStep3" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span class="avatar" id="gAv"></span>
+        <span style="font-weight:600;font-size:17px" id="gWho">—</span></div>
+      <div class="f"><label>Passcode</label>
+        <input id="gEnter" type="password" placeholder="Your passcode" autocomplete="off"></div>
+      <button class="btn go full" id="gGo">Open journal</button>
+      <button class="glink" id="gBack2">Use a different profile</button>
+    </div>
+    <div class="gerr" id="gErr"></div>
+  </div>
+  <div class="note" style="text-align:center;max-width:340px;margin:18px auto 0">
+    Profiles keep separate journals on this device. This is a convenience gate, not security —
+    anything truly private shouldn't live in a page like this.
+  </div>
+</div></div>
+
+<header>
+  <div class="hin">
+    <div class="hrow">
+      <span class="wm"><span class="a">Trading</span><span class="b">Journal</span></span>
+      <div class="hbtns">
+        <button class="profbtn" id="profBtn"><span class="avatar sm" id="profAv"></span><span class="n2" id="profName">—</span></button>
+        <button class="hbtn off" id="syBtn"><i></i><span id="syLabel">Sync</span></button>
+        <button class="hbtn off" id="tvBtn"><i></i><span id="tvLabel">TV</span></button>
+        <button class="hbtn" id="bkBtn"><i></i><span id="bkLabel">Backup</span></button>
+      </div>
+    </div>
+    <button class="acsel" id="acBtn">
+      <span style="min-width:0"><span class="nm" id="acName">No account</span><span class="bl" id="acBal">—</span></span>
+      <span class="badge demo" id="acBadge" style="display:none">DEMO</span><span class="cv">▾</span>
+    </button>
+    <nav class="tabs">
+      <button class="tab on" data-v="today">Today</button>
+      <button class="tab" data-v="log">Log</button>
+      <button class="tab" data-v="journal">Journal</button>
+      <button class="tab" data-v="cal">Calendar</button>
+      <button class="tab" data-v="lab">Lab</button>
+      <button class="tab" data-v="rules">Rules</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ══ TODAY ══ -->
+<section class="view on" id="v-today">
+  <div id="bannerSlot"></div>
+  <div class="hero">
+    <div class="hero-k" id="todayK">Today</div>
+    <div class="hero-v m" id="todayV">—</div>
+    <div class="hero-s" id="todayS">No trades yet today</div>
+  </div>
+  <div class="stats g4" id="todayStats"></div>
+
+  <div class="card" id="liveCard" style="display:none">
+    <div class="ch"><span>Live trades</span><em id="liveMeta"></em></div>
+    <div id="liveList"></div>
+  </div>
+
+  <div class="card" id="inboxCard" style="display:none">
+    <div class="ch"><span>From TradingView</span><em id="inboxMeta"></em></div>
+    <div id="inboxList"></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span>Equity curve</span><em id="eqMeta"></em></div>
+    <svg class="chart" id="chart" preserveAspectRatio="none"></svg>
+  </div>
+</section>
+
+<!-- ══ LOG ══ -->
+<section class="view" id="v-log">
+  <div class="card">
+    <div class="ch"><span id="fTitle">New trade</span><em id="fSrc"></em></div>
+    <div class="two">
+      <div class="f"><label>Date</label><input type="date" id="i-date" class="m"></div>
+      <div class="f"><label>Instrument</label><input id="i-sym" placeholder="NQ, GBPUSD…" autocomplete="off"></div>
+    </div>
+    <div class="f"><label>Direction</label>
+      <div class="seg" id="segDir"><button data-v="Long">Long</button><button data-v="Short">Short</button></div></div>
+    <div class="f"><label>Status</label>
+      <div class="seg" id="segStat"><button data-v="open">Still open</button><button data-v="closed" class="on">Closed</button></div>
+      <div class="hint">Open trades sit on the Today tab until you close them.</div></div>
+
+    <div class="three">
+      <div class="f"><label>Entry</label><input id="i-entry" class="m" inputmode="text" placeholder="0.00"></div>
+      <div class="f"><label>Stop</label><input id="i-stop" class="m" inputmode="text" placeholder="0.00"></div>
+      <div class="f"><label>Target</label><input id="i-target" class="m" inputmode="text" placeholder="0.00"></div>
+    </div>
+    <div class="two" id="closeFields">
+      <div class="f"><label>Exit</label><input id="i-exit" class="m" inputmode="text" placeholder="0.00"></div>
+      <div class="f"><label id="pnlLabel">P&amp;L</label><input id="i-pnl" class="m" inputmode="text" placeholder="120 or -80"></div>
+    </div>
+    <div class="two">
+      <div class="f"><label>R multiple</label><input id="i-r" class="m" inputmode="text" placeholder="auto from entry/stop/exit">
+        <div class="hint" id="rHint">Worked out for you when entry, stop and exit are filled.</div></div>
+      <div class="f"><label>Session</label>
+        <select id="i-ses"></select>
+        <div class="hint">Times shown are UK local.</div></div>
+    </div>
+
+    <div class="f"><label>Was this trade from an indicator?</label>
+      <div class="seg" id="segInd"><button data-v="yes">From indicator</button><button data-v="no" class="on">Discretionary</button></div>
+      <div class="hint">Keeps indicator trades separate from your own in the analysis.</div></div>
+
+    <details class="fold" id="indFold" style="display:none">
+      <summary>Indicator data</summary>
+      <div class="in">
+        <div class="f"><label>Which indicator</label>
+          <select id="i-ind"></select>
+          <div class="addrow"><input id="i-newind" placeholder="Add a new indicator" autocomplete="off">
+            <button class="btn gh sm" id="addInd">Add</button></div></div>
+        <div class="two">
+          <div class="f"><label>Model / setup</label><input id="i-model" placeholder="Post-London IFVG" autocomplete="off"></div>
+          <div class="f"><label>Indicator version</label><input id="i-ver" placeholder="V4" autocomplete="off"></div>
+        </div>
+        <div class="two">
+          <div class="f"><label>Timeframe</label>
+            <select id="i-tf"><option value="">—</option><option>1m</option><option>3m</option>
+            <option>5m</option><option>15m</option><option>1h</option></select></div>
+          <div class="f"><label>Sweep</label>
+            <select id="i-sweep"><option value="">—</option><option>London high</option>
+            <option>London low</option><option>Asia high</option><option>Asia low</option><option>None</option></select></div>
+        </div>
+        <div class="two">
+          <div class="f"><label>IFVG type</label>
+            <select id="i-ifvg"><option value="">—</option><option>Bullish</option><option>Bearish</option></select></div>
+          <div class="f"><label>Exit reason</label>
+            <select id="i-reason"><option value="">—</option><option>Target</option><option>Stop</option>
+            <option>Manual</option><option>Time</option><option>Breakeven</option></select></div>
+        </div>
+        <div class="two">
+          <div class="f"><label>MAE (R)</label><input id="i-mae" class="m" inputmode="text" placeholder="-0.4">
+            <div class="hint">Worst it went against you</div></div>
+          <div class="f"><label>MFE (R)</label><input id="i-mfe" class="m" inputmode="text" placeholder="2.8">
+            <div class="hint">Best it reached</div></div>
+        </div>
+      </div>
+    </details>
+
+    <div class="f"><label>Reasons I took it</label>
+      <div class="tags" id="tagBox"></div>
+      <div class="addrow"><input id="i-newtag" placeholder="Add your own" autocomplete="off">
+        <button class="btn gh sm" id="addTag">Add</button></div></div>
+    <div class="f" id="brkWrap" style="display:none"><label>Rules I broke <span style="color:var(--dim);font-weight:400">— leave empty if it was clean</span></label>
+      <div class="tags" id="brkBox"></div></div>
+    <div class="f"><label>Screenshots</label>
+      <div class="drop" id="drop"><div class="drop-t">Add chart screenshots</div>
+        <div class="drop-s">Tap to choose from your photos</div>
+        <input type="file" id="file" accept="image/*" multiple hidden></div>
+      <div class="shots" id="shotGrid"></div></div>
+    <div class="f"><label>What happened</label>
+      <textarea id="i-what" placeholder="How it played out — did it respect the level, how did you manage it, where did you get out and why?"></textarea></div>
+    <div class="f"><label>Lesson</label>
+      <textarea id="i-lesson" placeholder="One thing to repeat or one thing to stop." style="min-height:74px"></textarea></div>
+    <div class="acts"><button class="btn go" id="save">Save trade</button>
+      <button class="btn gh sm" id="cancel" style="display:none">Cancel</button></div>
+  </div>
+</section>
+
+<!-- ══ JOURNAL ══ -->
+<section class="view" id="v-journal">
+  <div class="filters"><input id="q" placeholder="Search…">
+    <select id="fOut"><option value="">All</option><option>Open</option><option>Wins</option>
+      <option>Losses</option><option>Needs journalling</option></select></div>
+  <div id="list"></div>
+</section>
+
+<!-- ══ CALENDAR ══ -->
+<section class="view" id="v-cal">
+  <div class="card">
+    <div class="cal-nav"><button id="pm">‹</button>
+      <div class="cal-mon"><div class="t" id="monT">—</div><div class="s m" id="monS">—</div></div>
+      <button id="nm">›</button></div>
+    <div class="cal-hd"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div></div>
+    <div class="cal" id="cal"></div>
+    <div id="wkndSlot"></div>
+    <div class="legend"><span><i class="g"></i>Green day</span><span><i class="r"></i>Red day</span><span><i class="n"></i>No trades</span></div>
+  </div>
+  <div class="card"><div class="ch"><span>Month at a glance</span></div><div class="stats" id="monStats" style="margin-bottom:0"></div></div>
+</section>
+
+<!-- ══ LAB ══ -->
+<section class="view" id="v-lab">
+  <div class="card">
+    <div class="ch"><span>Indicator lab</span><em id="labScope">all trades</em></div>
+    <div class="filters" style="margin-bottom:16px">
+      <select id="labModel"><option value="">All models</option></select>
+      <select id="labSrc"><option value="">Indicator &amp; discretionary</option><option value="__ind">Any indicator</option><option value="__man">Discretionary only</option></select>
+      <select id="labVer"><option value="">All versions</option></select>
+      <select id="labTf"><option value="">All timeframes</option></select>
+    </div>
+    <div class="stats g4" id="labStats"></div>
+  </div>
+  <div class="card"><div class="ch"><span>Findings</span><em>from your own data</em></div><div id="findings"></div></div>
+  <div class="card"><div class="ch"><span>Indicator vs discretionary</span><em>net R</em></div><div class="bars" id="byInd"></div></div>
+  <div class="card"><div class="ch"><span>By instrument</span><em>net R</em></div><div class="bars" id="byInst"></div></div>
+  <div class="card"><div class="ch"><span>By timeframe</span><em>net R</em></div><div class="bars" id="byTf"></div></div>
+  <div class="card"><div class="ch"><span>By session</span><em>net R</em></div><div class="bars" id="bySes"></div></div>
+  <div class="card"><div class="ch"><span>By sweep direction</span><em>net R</em></div><div class="bars" id="bySweep"></div></div>
+  <div class="card"><div class="ch"><span>By IFVG type</span><em>net R</em></div><div class="bars" id="byIfvg"></div></div>
+  <div class="card"><div class="ch"><span>Long vs short</span><em>net R</em></div><div class="bars" id="byDir"></div></div>
+  <div class="card">
+    <div class="ch"><span>Which reasons actually pay</span><em>net R</em></div>
+    <div class="bars" id="edge"></div>
+    <div class="note">A reason you tag on everything tells you nothing. The ones sitting red are the habits worth dropping.</div>
+  </div>
+</section>
+
+<!-- ══ RULES ══ -->
+<section class="view" id="v-rules">
+  <div class="card">
+    <div class="ch"><span>My rules</span></div>
+    <div class="addrow" style="margin-top:0;margin-bottom:18px">
+      <input id="r-new" placeholder="Write a rule…" autocomplete="off">
+      <button class="btn go sm" id="addRule">Add</button></div>
+    <div id="ruleList"></div>
+    <div id="suggWrap" style="display:none">
+      <div class="note" style="margin-top:0;margin-bottom:2px">Common ones — tap to add:</div>
+      <div class="sugg" id="sugg"></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span>Daily limits</span></div>
+    <div class="two">
+      <div class="f"><label>Max trades per day</label><input id="s-limit" class="m" inputmode="text" placeholder="3"></div>
+      <div class="f"><label>Daily loss limit (£/$)</label><input id="s-loss" class="m" inputmode="text" placeholder="300"></div>
+    </div>
+    <button class="btn gh sm" id="saveSet">Save limits</button>
+    <div class="note">Both show on the Today tab. Leave blank to turn off.</div>
+  </div>
+</section>
+
+</div>
+
+<!-- sheets -->
+<div class="ov" id="acSheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t">Accounts</span><button class="sh-x" data-close>×</button></div>
+  <div class="aclist" id="acList"></div><button class="btn go" id="newAc">Create account</button>
+</div></div>
+
+<div class="ov" id="acForm"><div class="sheet">
+  <div class="sh-h"><span class="sh-t" id="afTitle">Create account</span><button class="sh-x" data-close>×</button></div>
+  <div class="f"><label>Account name</label><input id="a-name" placeholder="Prop challenge, Main live…" autocomplete="off"></div>
+  <div class="f"><label>Type</label><div class="seg" id="segType"><button data-v="Demo">Demo</button><button data-v="Live">Live</button></div></div>
+  <div class="two">
+    <div class="f"><label>Currency</label><select id="a-ccy"><option value="GBP">£ GBP</option><option value="USD">$ USD</option><option value="EUR">€ EUR</option></select></div>
+    <div class="f"><label>Starting balance</label><input id="a-start" class="m" inputmode="text" placeholder="10000"></div></div>
+  <div class="acts"><button class="btn go" id="saveAc">Save account</button><button class="btn rd sm" id="delAc" style="display:none">Delete</button></div>
+</div></div>
+
+<div class="ov" id="daySheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t" id="dsT">Day</span><button class="sh-x" data-close>×</button></div>
+  <div id="dsBody"></div>
+</div></div>
+
+<div class="ov" id="closeSheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t">Close trade</span><button class="sh-x" data-close>×</button></div>
+  <div id="closeInfo" class="hs info"><i></i><div class="t"><b id="ciT">—</b><span id="ciS">—</span></div></div>
+  <div class="two">
+    <div class="f"><label>Exit price</label><input id="c-exit" class="m" inputmode="text" placeholder="0.00"></div>
+    <div class="f"><label id="cPnlLab">P&amp;L</label><input id="c-pnl" class="m" inputmode="text" placeholder="120 or -80"></div>
+  </div>
+  <div class="f"><label>R multiple</label><input id="c-r" class="m" inputmode="text" placeholder="auto"><div class="hint" id="cRHint"></div></div>
+  <div class="f"><label>Exit reason</label>
+    <select id="c-reason"><option value="">—</option><option>Target</option><option>Stop</option>
+    <option>Manual</option><option>Time</option><option>Breakeven</option></select></div>
+  <button class="btn go full" id="doClose">Close it</button>
+  <div class="note">You can add the write-up afterwards — it'll show as needing journalling until you do.</div>
+</div></div>
+
+<div class="ov" id="tvSheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t">TradingView link</span><button class="sh-x" data-close>×</button></div>
+  <div class="hs" id="tvHealth"><i></i><div class="t"><b id="tvT">—</b><span id="tvS">—</span></div></div>
+
+  <div class="sh-sec">Paste an alert</div>
+  <div class="f"><label>Drop the alert JSON here — works with no setup at all</label>
+    <textarea id="tvPaste" class="m" placeholder='{"event":"ENTRY","symbol":"NQ","direction":"LONG","entry":23450.25,"stop":23430.25,"target":23490.25}' style="min-height:96px;font-size:12px"></textarea>
+    <button class="btn go full" id="tvPasteGo" style="margin-top:10px">Read it</button>
+  </div>
+
+  <div class="sh-sec">Live feed</div>
+  <div class="f"><label>Events URL from your relay</label>
+    <input id="tvUrl" placeholder="https://tj-relay.you.workers.dev/events" autocomplete="off" spellcheck="false"></div>
+  <div class="f"><label>Secret</label><input id="tvKey" placeholder="the SECRET you set on the worker" autocomplete="off" spellcheck="false"></div>
+  <div class="f"><label>Polling</label>
+    <div class="seg sm" id="segPoll"><button data-v="on">On</button><button data-v="off" class="on">Off</button></div>
+    <div class="hint">Checks every 20 seconds while this tab is open.</div></div>
+  <div class="acts"><button class="btn go" id="tvSave">Save &amp; test</button><button class="btn gh sm" id="tvNow">Check now</button></div>
+
+  <div class="sh-sec">Alert message</div>
+  <div class="code" id="pineCode"></div>
+  <button class="btn gh full" id="copyPine" style="margin-top:10px">Copy this</button>
+  <div class="note">Paste into the alert message box in TradingView. Deploy the relay worker first — the file came alongside this journal.</div>
+</div></div>
+
+<div class="ov" id="bkSheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t">Backup &amp; restore</span><button class="sh-x" data-close>×</button></div>
+  <div class="hs" id="health"><i></i><div class="t"><b id="hsT">—</b><span id="hsS">—</span></div></div>
+  <div class="sh-sec">Save a copy</div>
+  <div class="stack">
+    <button class="btn go full" id="copyBk">Copy backup to clipboard</button>
+    <button class="btn gh full" id="showBk">Show backup text</button>
+    <button class="btn gh full" id="expFull">Download everything</button>
+    <button class="btn gh full" id="expLite">Download without screenshots</button>
+  </div>
+  <div class="f" id="showWrap" style="display:none;margin-top:13px">
+    <label>Select all and copy this</label>
+    <textarea id="showBox" class="m" readonly style="min-height:130px;font-size:11.5px"></textarea></div>
+  <div class="sh-sec">Bring a backup in</div>
+  <div class="f"><label>What should happen to what's here now?</label>
+    <div class="seg sm" id="segMode"><button data-v="merge" class="on">Merge</button><button data-v="replace">Replace</button></div>
+    <div class="note" style="margin-top:9px" id="modeNote">Merge keeps everything here and adds what's missing. Nothing is overwritten.</div></div>
+  <div class="stack">
+    <button class="btn go full" id="pasteBtn">Paste backup text</button>
+    <button class="btn gh full" id="impBtn">Choose backup file</button>
+    <input type="file" id="impFile" accept="application/json,.json,text/plain" hidden></div>
+  <div class="f" id="pasteWrap" style="display:none;margin-top:13px">
+    <label>Paste it here</label>
+    <textarea id="pasteBox" class="m" placeholder='{"app":"tape", …}' style="min-height:110px;font-size:11.5px"></textarea>
+    <button class="btn go full" id="pasteGo" style="margin-top:10px">Read it</button></div>
+  <div id="prevSlot"></div>
+  <div class="sh-sec">Danger</div>
+  <button class="btn rd full" id="wipe">Delete everything in the app</button>
+</div></div>
+
+<div class="ov" id="profSheet"><div class="sheet">
+  <div class="sh-h"><span class="sh-t">Profile</span><button class="sh-x" data-close>×</button></div>
+  <div style="display:flex;align-items:center;gap:13px;margin-bottom:8px">
+    <span class="avatar" id="pfAv"></span>
+    <span style="flex:1;min-width:0"><span style="font-weight:600;font-size:17px;display:block" id="pfName">—</span>
+    <span class="rolechip user" id="pfRole">USER</span></span></div>
+  <div class="note" id="pfNote" style="margin-top:4px"></div>
+  <div class="f" id="pfUnlock" style="display:none;margin-top:16px">
+    <label>Access code</label>
+    <div class="addrow" style="margin-top:0"><input id="pfKey" type="password" placeholder="Unlocks the Lab" autocomplete="off">
+      <button class="btn go sm" id="pfKeyGo">Unlock</button></div></div>
+
+  <div class="sh-sec">My indicators</div>
+  <div id="indList"></div>
+  <div class="addrow" style="margin-top:0">
+    <input id="pf-newind" placeholder="Add an indicator" autocomplete="off">
+    <button class="btn go sm" id="pfAddInd">Add</button></div>
+  <div class="note">Every trade you tag with one of these is analysed separately in the Lab.</div>
+
+  <div class="sh-sec">Sync across devices</div>
+  <div class="hs" id="syHealth"><i></i><div class="t"><b id="syT">Off</b><span id="syS">Your journal stays on this device.</span></div></div>
+  <div class="f"><label>Sync server URL</label>
+    <input id="sy-url" placeholder="https://tj-sync.you.workers.dev" autocomplete="off" spellcheck="false"></div>
+  <div class="two">
+    <div class="f"><label>Journal ID</label><input id="sy-id" placeholder="e.g. oscar-journal" autocomplete="off" spellcheck="false"></div>
+    <div class="f"><label>Key</label><input id="sy-key" type="password" placeholder="6+ characters" autocomplete="off"></div></div>
+  <div class="f"><label>Sync</label>
+    <div class="seg sm" id="segSync"><button data-v="on">On</button><button data-v="off" class="on">Off</button></div>
+    <div class="hint">Pulls on open, then every 60 seconds, and pushes a few seconds after any change.</div></div>
+  <div class="acts"><button class="btn go" id="sySave">Save &amp; sync now</button>
+    <button class="btn gh sm" id="syNow">Sync now</button></div>
+  <div class="note">Use the same three values on every device. First device to sync sets the key —
+    after that a wrong key is refused.</div>
+
+  <div class="sh-sec">Session</div>
+  <div class="stack">
+    <button class="btn gh full" id="pfSwitch">Switch profile</button>
+    <button class="btn rd full" id="pfOut">Sign out</button></div>
+  <div class="note">Signing out keeps your journal on this device — it just asks who you are next time.</div>
+</div></div>
+
+<div class="dlg" id="dlg"><div class="box">
+  <h4 id="dlgT">Are you sure?</h4><p id="dlgB"></p>
+  <div class="row"><button class="btn gh" id="dlgNo">Cancel</button><button class="btn rd" id="dlgYes">Delete</button></div>
+</div></div>
+
+<div class="lb" id="lb"><img id="lbImg" alt="Screenshot"><button id="lbX">Close</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* Per-profile keys. NS is set once a profile signs in. */
+let NS="tape3:";
+const AK=()=>NS+"accounts",TK=()=>NS+"trades",RK=()=>NS+"rules",BK=()=>NS+"lastBackup",
+      CK=()=>NS+"cur",GK=()=>NS+"settings",EK=()=>NS+"events",IK=()=>NS+"indicators",
+      SK=id=>NS+"shots:"+id;
+const UK="tj:users",SESK="tj:session";
+let USERS=[],ME=null,INDS=[];
+/* No founder string to compare against. Founder = whoever can decrypt
+   the Lab. A wrong passphrase simply fails, so it cannot be faked. */
+const HS=typeof window.storage!=="undefined"&&window.storage;
+let ok=false,ACC=[],T=[],RULES=[],EVENTS=[],SET={},cur=null,lastBk=null;
+let editing=null,editAc=null,pending=[],dir="",tstat="closed",atype="",custom=[],closing=null;
+const SH=new Map(),sel=new Set(),brk=new Set();
+let calY=new Date().getFullYear(),calM=new Date().getMonth(),impMode="merge",staged=null,pollTimer=null,tvState="off";
+
+/* Storage: uses whatever the browser gives us.
+   1. the in-chat artifact API, when running there
+   2. IndexedDB — the real one when hosted. No practical size cap,
+      so screenshots are fine.
+   3. localStorage — last resort, ~5MB, images will not fit
+   Whichever wins is shown in the Backup sheet. */
+let BACKEND="none";
+const IDB={
+  db:null,
+  open(){ if(this.db)return Promise.resolve(this.db);
+    return new Promise((res,rej)=>{
+      let r;try{r=indexedDB.open("tradingJournal",1);}catch(e){return rej(e);}
+      r.onupgradeneeded=()=>{try{r.result.createObjectStore("kv");}catch(e){}};
+      r.onsuccess=()=>{this.db=r.result;res(r.result);};
+      r.onerror=()=>rej(r.error);
+      r.onblocked=()=>rej(new Error("blocked"));
+    });},
+  async get(k){const db=await this.open();return new Promise((res,rej)=>{
+    const q=db.transaction("kv","readonly").objectStore("kv").get(k);
+    q.onsuccess=()=>res(q.result===undefined?null:q.result);q.onerror=()=>rej(q.error);});},
+  async set(k,v){const db=await this.open();return new Promise((res,rej)=>{
+    const tx=db.transaction("kv","readwrite");tx.objectStore("kv").put(v,k);
+    tx.oncomplete=()=>res(true);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);});},
+  async del(k){const db=await this.open();return new Promise(res=>{
+    const tx=db.transaction("kv","readwrite");tx.objectStore("kv").delete(k);
+    tx.oncomplete=()=>res(true);tx.onerror=()=>res(false);});}
+};
+const S={
+  async init(){
+    if(HS){BACKEND="artifact";ok=true;return;}
+    try{await IDB.set("__probe",1);await IDB.del("__probe");BACKEND="idb";ok=true;}
+    catch(e){
+      try{localStorage.setItem("__probe","1");localStorage.removeItem("__probe");BACKEND="ls";ok=true;}
+      catch(e2){BACKEND="none";ok=false;}
+    }
+    /* ask the browser not to evict this data when space runs low */
+    try{if(ok&&navigator.storage&&navigator.storage.persist)await navigator.storage.persist();}catch(e){}
+  },
+  async get(k){
+    try{
+      if(BACKEND==="artifact"){const r=await window.storage.get(k);return r&&r.value?JSON.parse(r.value):null;}
+      if(BACKEND==="idb")return await IDB.get(k);
+      if(BACKEND==="ls"){const v=localStorage.getItem(k);return v==null?null:JSON.parse(v);}
+    }catch(e){}
+    return null;
+  },
+  async set(k,v){
+    try{
+      if(BACKEND==="artifact"){const r=await window.storage.set(k,JSON.stringify(v));if(!r)throw 0;return true;}
+      if(BACKEND==="idb"){await IDB.set(k,v);return true;}
+      if(BACKEND==="ls"){localStorage.setItem(k,JSON.stringify(v));return true;}
+    }catch(e){ok=false;return false;}
+    return false;
+  },
+  async del(k){
+    try{
+      if(BACKEND==="artifact")await window.storage.delete(k);
+      else if(BACKEND==="idb")await IDB.del(k);
+      else if(BACKEND==="ls")localStorage.removeItem(k);
+    }catch(e){}
+  }
+};
+
+const TAGS=["AMD","IFVG","3pm Reversal strat","Liquidity sweep","Order block","Fair value gap",
+ "Breaker","Market structure shift","Change of character","Premium / discount","OTE",
+ "Equal highs / lows","SMT divergence","Judas swing","Killzone timing","Daily bias aligned",
+ "HTF level","Previous day high / low","Session open"];
+const SESSIONS=[
+ ["Asia","00:00 – 06:00"],["London open","07:00 – 10:00"],["Post London","10:00 – 12:00"],
+ ["Pre NY","12:00 – 13:30"],["NY AM","13:30 – 16:00"],["Silver bullet","15:00 – 16:00"],
+ ["NY PM","18:30 – 21:00"]];
+const AV_USER='<svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.7-9 6v2h18v-2c0-3.3-4-6-9-6Z"/></svg>';
+const AV_FOUND='<svg viewBox="0 0 24 24"><path d="M3 7l4.5 3.5L12 4l4.5 6.5L21 7l-1.8 11H4.8L3 7Zm1.8 13h14.4v2H4.8v-2Z"/></svg>';
+const SUGG=["Risk max 1% per trade","Max 2 trades per day","No trading outside my killzone",
+ "Stop for the day after 2 losses","Never move my stop against me","No revenge trades",
+ "Must have HTF bias aligned","No trading through red news"];
+const SY={GBP:"£",USD:"$",EUR:"€"};
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const PINE=`entryMsg = '{' +
+  '"secret":"YOUR_SECRET",' +
+  '"event":"ENTRY",' +
+  '"model":"POST_LONDON_IFVG",' +
+  '"version":"V4",' +
+  '"symbol":"'    + syminfo.ticker              + '",' +
+  '"timeframe":"' + timeframe.period            + '",' +
+  '"direction":"' + (isLong ? "LONG" : "SHORT") + '",' +
+  '"entry":'      + str.tostring(entryPrice)    + ',' +
+  '"stop":'       + str.tostring(stopPrice)     + ',' +
+  '"target":'     + str.tostring(targetPrice)   + ',' +
+  '"sweep":"'     + sweepSide                   + '",' +
+  '"ifvg":"'      + ifvgType                    + '"' +
+'}'
+alert(entryMsg, alert.freq_once_per_bar_close)
+
+exitMsg = '{' +
+  '"secret":"YOUR_SECRET",' +
+  '"event":"EXIT",' +
+  '"symbol":"' + syminfo.ticker          + '",' +
+  '"exit":'    + str.tostring(exitPrice) + ',' +
+  '"reason":"' + exitReason              + '",' +
+  '"mae":'     + str.tostring(maeR)      + ',' +
+  '"mfe":'     + str.tostring(mfeR)      +
+'}'
+alert(exitMsg, alert.freq_once_per_bar_close)`;
+
+const $=i=>document.getElementById(i);
+
+/* ══════ PROFILES ══════
+   A convenience gate. It separates journals on this device and decides
+   which icon you get. It is not access control — the code is readable
+   by anyone who opens the page source. Said plainly in the UI too. */
+async function sha(s){
+  try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("tj|"+s));
+    return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+  catch(e){let x=0;for(let i=0;i<s.length;i++){x=(x*31+s.charCodeAt(i))|0;}return "f"+x;}
+}
+const avatarFor=r=>'<span class="avatar'+(r==="founder"?" founder":"")+'">'+(r==="founder"?AV_FOUND:AV_USER)+'</span>';
+const isFounder=()=>!!(ME&&ME.role==="founder"&&LAB);
+
+function gErr(m){$("gErr").textContent=m||"";}
+function gShow(n){["gStep1","gStep2","gStep3","gStep4"].forEach((s,i)=>$(s).style.display=(i===n-1?"":"none"));gErr("");}
+
+async function loadUsers(){USERS=await S.get(UK)||[];}
+async function saveUsers(){await S.set(UK,USERS);}
+
+function drawGate(){
+  const box=$("gUsers");
+  $("gNone").style.display=USERS.length?"none":"";
+  if(!USERS.length){box.innerHTML="";$("gSub").textContent="Set up your journal on this device";gShow(1);return;}
+  $("gSub").textContent="Sign in to open your journal";
+  box.innerHTML=USERS.map(u=>'<button class="gu" data-id="'+u.id+'">'+avatarFor(u.role)+
+    '<span class="nm2">'+esc(u.name)+'</span>'+
+    '<span class="rolechip '+u.role+'">'+(u.role==="founder"?"FOUNDER":"USER")+'</span>'+
+    (u.pass?'<span class="lk">🔒</span>':'')+'</button>').join("");
+  box.querySelectorAll(".gu").forEach(b=>b.onclick=()=>pick(b.dataset.id));
+  gShow(1);
+}
+let picking=null;
+function pick(id){
+  const u=USERS.find(x=>x.id===id);if(!u)return;
+  picking=id;
+  if(!u.pass){signIn(u);return;}
+  $("gAv").className="avatar"+(u.role==="founder"?" founder":"");
+  $("gAv").innerHTML=u.role==="founder"?AV_FOUND:AV_USER;
+  $("gWho").textContent=u.name;$("gEnter").value="";gShow(3);
+  setTimeout(()=>$("gEnter").focus(),120);
+}
+$("gRestoreBtn").onclick=()=>{$("gBk").value="";$("gBkInfo").innerHTML="";
+  $("gBkName").value="";$("gBkPass").value="";$("gBkCode").value="";gShow(4);};
+$("gBack3").onclick=()=>drawGate();
+$("gBk").oninput=()=>{
+  const info=$("gBkInfo");
+  let d;try{d=JSON.parse($("gBk").value.trim());}catch(e){info.innerHTML="";return;}
+  const tr=Array.isArray(d)?d:(d.trades||[]);
+  if(!Array.isArray(tr)){info.innerHTML="";return;}
+  const imgs=tr.filter(t=>(t.screenshots||[]).length).length;
+  info.innerHTML='<div class="prev" style="margin:0 0 14px"><div class="t">Backup found</div><div class="l">'+
+    tr.length+' trades · '+((d.accounts||[]).length)+' accounts · '+((d.rules||[]).length)+' rules'+
+    (imgs?'<br>'+imgs+' with screenshots':'<br>no screenshots in this copy')+
+    (d.exported?'<br>made '+esc(String(d.exported).slice(0,10)):'')+'</div></div>';
+};
+$("gBkGo").onclick=async()=>{
+  const name=$("gBkName").value.trim();
+  if(!name){gErr("Name the profile first");return;}
+  if(USERS.some(u=>u.name.toLowerCase()===name.toLowerCase())){gErr("There's already a profile with that name");return;}
+  let d;
+  try{d=JSON.parse($("gBk").value.trim());}catch(e){gErr("That backup text isn't valid");return;}
+  const trades=Array.isArray(d)?d:(d.trades||[]);
+  if(!Array.isArray(trades)||(!trades.length&&!((d.accounts||[]).length))){gErr("No trades found in that backup");return;}
+  const code=$("gBkCode").value.trim();
+  let role="user";
+  if(code){ if(await unlockLab(code))role="founder"; else{gErr("That access code isn't recognised");return;} }
+  const pw=$("gBkPass").value;
+  const u={id:"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    name,role,pass:pw?await sha(pw):null,key:role==="founder"?code:null,created:Date.now()};
+  gErr("Restoring…");
+  USERS.push(u);await saveUsers();
+  ME=u;NS="u_"+u.id+":";
+  await S.set(SESK,u.id);
+
+  const accs=(d&&d.accounts)||[],rules=(d&&d.rules)||[];
+  let fb=null;
+  if(trades.some(t=>!t.acc||!accs.some(a=>a.id===t.acc))){
+    fb={id:"a_restored",name:"Restored",type:"Live",ccy:"GBP",start:0};
+    if(!accs.some(a=>a.id===fb.id))accs.push(fb);}
+  const clean=[];
+  for(const t of trades){
+    if(!t||!t.id)continue;
+    const{screenshots,...meta}=t;
+    if(!meta.acc||!accs.some(a=>a.id===meta.acc))meta.acc=fb?fb.id:(accs[0]&&accs[0].id);
+    if(!meta.date)meta.date=ymd();
+    if(!meta.ts)meta.ts=Date.parse(meta.date)||Date.now();
+    if(!meta.status)meta.status="closed";
+    if(typeof meta.pnl!=="number")meta.pnl=num(meta.pnl)||0;
+    meta.shots=(screenshots||[]).length;
+    clean.push(meta);
+    if(screenshots&&screenshots.length)await S.set(SK(meta.id),screenshots);
+  }
+  await S.set(AK(),accs);await S.set(TK(),clean);await S.set(RK(),rules);
+  if(d&&d.settings)await S.set(GK(),d.settings);
+  await S.set(CK(),accs[0]?accs[0].id:null);
+  $("gate").classList.remove("on");document.body.classList.remove("gated");
+  await bootData();
+  toast("Restored "+clean.length+" trade"+(clean.length===1?"":"s")+" onto this device");
+};
+
+$("gNew").onclick=()=>{$("gName").value="";$("gPass").value="";$("gCode").value="";
+  $("gLab").textContent="Your name";gShow(2);setTimeout(()=>$("gName").focus(),120);};
+$("gBack").onclick=()=>drawGate();
+$("gBack2").onclick=()=>drawGate();
+$("gCreate").onclick=async()=>{
+  const name=$("gName").value.trim();
+  if(!name){gErr("Give the profile a name");return;}
+  if(USERS.some(u=>u.name.toLowerCase()===name.toLowerCase())){gErr("There's already a profile with that name");return;}
+  const pw=$("gPass").value;
+  const code=$("gCode").value.trim();
+  let role="user";
+  if(code){
+    gErr("Checking…");
+    if(await unlockLab(code))role="founder";
+    else{gErr("That access code isn't recognised");return;}
+  }
+  const u={id:"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    name,role,pass:pw?await sha(pw):null,key:role==="founder"?code:null,created:Date.now()};
+  USERS.push(u);await saveUsers();signIn(u);
+};
+$("gGo").onclick=async()=>{
+  const u=USERS.find(x=>x.id===picking);if(!u)return;
+  const h2=await sha($("gEnter").value);
+  if(h2!==u.pass){gErr("That passcode doesn't match");return;}
+  signIn(u);
+};
+$("gEnter").onkeydown=e=>{if(e.key==="Enter")$("gGo").click();};
+$("gName").onkeydown=e=>{if(e.key==="Enter")$("gPass").focus();};
+$("gPass").onkeydown=e=>{if(e.key==="Enter")$("gCreate").click();};
+
+async function signIn(u){
+  ME=u;NS="u_"+u.id+":";
+  if(u.role==="founder"&&!LAB&&u.key){
+    if(!await unlockLab(u.key)){u.role="user";u.key=null;await saveUsers();}
+  }
+  await S.set(SESK,u.id);
+  $("gate").classList.remove("on");document.body.classList.remove("gated");
+  await bootData();
+}
+async function signOut(){
+  await S.del(SESK);ME=null;
+  location.reload();
+}
+function paintMe(){
+  if(!ME)return;
+  $("profAv").className="avatar sm"+(ME.role==="founder"?" founder":"");
+  $("profAv").innerHTML=ME.role==="founder"?AV_FOUND:AV_USER;
+  $("profName").textContent=ME.name;
+  document.querySelector('.tab[data-v="lab"]').style.display=(isFounder()&&LAB)?"":"none";
+  if(!(isFounder()&&LAB)&&document.querySelector('#v-lab').classList.contains("on")){
+    document.querySelector('.tab[data-v="today"]').click();}
+}
+$("profBtn").onclick=()=>{
+  if(!ME)return;
+  $("pfAv").className="avatar"+(ME.role==="founder"?" founder":"");
+  $("pfAv").innerHTML=ME.role==="founder"?AV_FOUND:AV_USER;
+  $("pfName").textContent=ME.name;
+  $("pfRole").textContent=ME.role==="founder"?"FOUNDER":"USER";
+  $("pfRole").className="rolechip "+ME.role;
+  $("pfNote").textContent=isFounder()
+    ?"Full access, including the Lab."
+    :"The Lab is limited to the founder account.";
+  $("pfUnlock").style.display=LAB?"none":"";syFill();syPaint();
+  drawInds();
+  $("profSheet").classList.add("on");
+};
+/* LOCAL date — never toISOString, that shifts to UTC and moves the day */
+function ymd(d){d=d||new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function num(v){if(v==null)return null;
+  const s=String(v).replace(/[\u2212\u2012\u2013\u2014\u2015]/g,"-").replace(/[^0-9.\-]/g,"");
+  if(!s||s==="-"||s===".")return null;const x=parseFloat(s);return isFinite(x)?x:null;}
+const acc=()=>ACC.find(a=>a.id===cur)||null;
+const sym=()=>SY[(acc()||{}).ccy]||"£";
+const fm=v=>(v<0?"−":"")+sym()+Math.abs(v||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fm0=v=>(v<0?"−":"")+sym()+Math.abs(Math.round(v||0)).toLocaleString("en-GB");
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const chrono=l=>[...l].sort((a,b)=>String(a.date).localeCompare(String(b.date))||(a.ts||0)-(b.ts||0));
+const mine=()=>T.filter(t=>t.acc===cur);
+const closed=()=>mine().filter(t=>t.status!=="open");
+const openT=()=>mine().filter(t=>t.status==="open");
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const needsJ=t=>t.status!=="open"&&!(t.what&&t.what.trim());
+function toast(m){const t=$("toast");t.textContent=m;t.className="toast on";clearTimeout(t._);t._=setTimeout(()=>t.className="toast",2800);}
+
+let dlgRes=null;
+function ask(title,body,yes){
+  $("dlgT").textContent=title;$("dlgB").textContent=body||"";$("dlgYes").textContent=yes||"Delete";
+  $("dlg").classList.add("on");return new Promise(r=>{dlgRes=r;});}
+$("dlgYes").onclick=()=>{$("dlg").classList.remove("on");if(dlgRes)dlgRes(true);dlgRes=null;};
+$("dlgNo").onclick=()=>{$("dlg").classList.remove("on");if(dlgRes)dlgRes(false);dlgRes=null;};
+$("dlg").onclick=e=>{if(e.target.id==="dlg"){$("dlg").classList.remove("on");if(dlgRes)dlgRes(false);dlgRes=null;}};
+
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));
+  scrollTo({top:0,behavior:"smooth"});
+  if(b.dataset.v==="today")requestAnimationFrame(chart);
+  if(b.dataset.v==="cal")calendar();
+  if(b.dataset.v==="lab")lab();});
+const go=v=>document.querySelector('.tab[data-v="'+v+'"]').click();
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>b.closest(".ov").classList.remove("on"));
+document.querySelectorAll(".ov").forEach(o=>o.onclick=e=>{if(e.target===o)o.classList.remove("on");});
+
+/* ═══ R MATHS ═══ */
+function calcR(t){
+  const e=num(t.entry),s=num(t.stop),x=num(t.exit);
+  if(e==null||s==null||x==null)return null;
+  const risk=Math.abs(e-s);if(!risk)return null;
+  const rew=(t.dir==="Short")?(e-x):(x-e);
+  return +(rew/risk).toFixed(2);
+}
+function plannedRR(t){
+  const e=num(t.entry),s=num(t.stop),g=num(t.target);
+  if(e==null||s==null||g==null)return null;
+  const risk=Math.abs(e-s);if(!risk)return null;
+  return +(Math.abs(g-e)/risk).toFixed(2);
+}
+
+/* ═══ TRADINGVIEW ═══ */
+function tvPaint(){
+  const b=$("tvBtn");
+  b.className="hbtn "+(tvState==="on"?"on":tvState==="bad"?"bad":"off");
+  $("tvLabel").textContent=tvState==="on"?"Live":tvState==="bad"?"TV error":"TradingView";
+  const unl=EVENTS.filter(e=>!e.used).length;
+  const h=$("tvHealth"),t=$("tvT"),s=$("tvS");
+  if(tvState==="on"){h.className="hs info";t.textContent="Polling every 20 seconds";
+    s.textContent=(SET.tvLast?"Last check "+new Date(SET.tvLast).toLocaleTimeString("en-GB"):"waiting")+" · "+unl+" unhandled";}
+  else if(tvState==="bad"){h.className="hs bad";t.textContent="Can't reach the relay";
+    s.textContent="Check the URL and secret. Pasting an alert still works.";}
+  else{h.className="hs";t.textContent="Not connected";
+    s.textContent="Paste alerts by hand, or set up the relay below.";}
+  const dot=document.querySelector('.tab[data-v="today"] .dot');
+  if(unl&&!dot){const d=document.createElement("span");d.className="dot";
+    document.querySelector('.tab[data-v="today"]').appendChild(d);}
+  else if(!unl&&dot)dot.remove();
+}
+$("tvBtn").onclick=()=>{
+  $("tvUrl").value=SET.tvUrl||"";$("tvKey").value=SET.tvKey||"";
+  $("segPoll").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===(SET.tvPoll?"on":"off")));
+  $("pineCode").textContent=PINE;tvPaint();$("tvSheet").classList.add("on");};
+$("segPoll").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segPoll").querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");});
+$("copyPine").onclick=async()=>{try{await navigator.clipboard.writeText(PINE);toast("Copied");}
+  catch(e){toast("Select the text and copy it manually");}};
+$("tvSave").onclick=async()=>{
+  SET.tvUrl=$("tvUrl").value.trim();SET.tvKey=$("tvKey").value.trim();
+  SET.tvPoll=$("segPoll").querySelector("button.on").dataset.v==="on";
+  await S.set(GK(),SET);startPoll();await poll(true);};
+$("tvNow").onclick=()=>poll(true);
+$("tvPasteGo").onclick=()=>{
+  const raw=$("tvPaste").value.trim();if(!raw){toast("Nothing to read");return;}
+  let d;try{d=JSON.parse(raw);}catch(e){toast("That isn't valid JSON");return;}
+  const arr=Array.isArray(d)?d:[d];
+  let n=0;arr.forEach(e=>{if(ingest(e))n++;});
+  $("tvPaste").value="";saveEvents();render();
+  toast(n?"Read "+n+" event"+(n===1?"":"s"):"Nothing new in that");
+  if(n)$("tvSheet").classList.remove("on");};
+
+function ingest(raw){
+  if(!raw||typeof raw!=="object")return false;
+  const id=raw.id||uid("e");
+  if(EVENTS.some(e=>e.id===id))return false;
+  const e={id,receivedAt:raw.receivedAt||Date.now(),used:false,
+    event:String(raw.event||"NOTE").toUpperCase(),
+    symbol:raw.symbol?String(raw.symbol).toUpperCase():"",
+    direction:raw.direction?(String(raw.direction).toUpperCase()==="SHORT"?"Short":"Long"):"",
+    entry:num(raw.entry),stop:num(raw.stop),target:num(raw.target),exit:num(raw.exit),
+    model:raw.model||"",version:raw.version||"",timeframe:raw.timeframe?String(raw.timeframe).replace(/^(\d+)$/,"$1m"):"",
+    sweep:raw.sweep||"",ifvg:raw.ifvg||"",reason:raw.reason||"",
+    mae:num(raw.mae),mfe:num(raw.mfe),note:raw.note||""};
+  EVENTS.unshift(e);
+  if(EVENTS.length>200)EVENTS.length=200;
+  return true;
+}
+async function saveEvents(){await S.set(EK(),EVENTS);}
+
+/* ══ indicators ══ */
+async function saveInds(){await S.set(IK(),INDS);queuePush();}
+function drawInds(){
+  const box=$("indList");if(!box)return;
+  if(!INDS.length){box.innerHTML='<div class="note" style="margin-top:0">None yet. Add the indicators you actually trade from.</div>';}
+  else box.innerHTML=INDS.map(n=>{
+    const used=T.filter(t=>t.indicator===n).length;
+    return '<div class="indrow" data-n="'+esc(n)+'"><span class="l"><span class="n3">'+esc(n)+
+      '</span><span class="s3">'+used+' trade'+(used===1?"":"s")+'</span></span>'+
+      '<button class="x" data-delind>×</button></div>';}).join("");
+  box.querySelectorAll("[data-delind]").forEach(b=>b.onclick=async()=>{
+    const n=b.closest(".indrow").dataset.n;
+    if(!await ask("Remove this indicator?","Trades already tagged with it keep the name."))return;
+    INDS=INDS.filter(x=>x!==n);await saveInds();drawInds();fillInds();});
+  fillInds();
+}
+function fillInds(){
+  const s=$("i-ind");if(!s)return;
+  const keep=s.value;
+  s.innerHTML='<option value="">—</option>'+INDS.map(n=>'<option>'+esc(n)+'</option>').join("");
+  s.value=INDS.includes(keep)?keep:"";
+}
+async function addInd(name){
+  const v=(name||"").trim();if(!v)return null;
+  if(!INDS.includes(v)){INDS.push(v);await saveInds();}
+  drawInds();fillInds();return v;
+}
+
+async function poll(manual){
+  const url=(SET.tvUrl||"").trim();
+  if(!url){if(manual)toast("Add your relay URL first");return;}
+  try{
+    const u=new URL(url);
+    if(SET.tvKey)u.searchParams.set("k",SET.tvKey);
+    u.searchParams.set("since",String(SET.tvSince||0));
+    const r=await fetch(u.toString(),{method:"GET",mode:"cors"});
+    if(!r.ok)throw new Error("http "+r.status);
+    const d=await r.json();
+    const list=Array.isArray(d)?d:(d.events||[]);
+    let n=0;list.forEach(e=>{if(ingest(e))n++;});
+    SET.tvSince=d.now||Date.now();SET.tvLast=Date.now();
+    tvState=SET.tvPoll?"on":"off";
+    await S.set(GK(),SET);await saveEvents();
+    render();
+    if(manual)toast(n?"Pulled "+n+" new event"+(n===1?"":"s"):"Connected — nothing new");
+    else if(n)toast(n+" new from TradingView");
+  }catch(err){
+    tvState="bad";tvPaint();
+    if(manual)toast("Couldn't reach it — check URL, secret, and that CORS is on");
+  }
+}
+function startPoll(){
+  if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
+  if(SET.tvPoll&&SET.tvUrl){tvState="on";pollTimer=setInterval(()=>poll(false),20000);}
+  else tvState="off";
+  tvPaint();
+}
+
+function drawInbox(){
+  const un=EVENTS.filter(e=>!e.used);
+  $("inboxCard").style.display=un.length?"":"none";
+  $("inboxMeta").textContent=un.length+" waiting";
+  $("inboxList").innerHTML=un.slice(0,12).map(e=>{
+    const k=e.event==="ENTRY"?"entry":e.event==="EXIT"?"exit":"note";
+    const bits=[e.direction,e.timeframe,e.model,e.entry!=null?"@ "+e.entry:"",e.exit!=null?"exit "+e.exit:""].filter(Boolean).join(" · ");
+    return '<div class="ev" data-id="'+e.id+'"><div class="l"><div class="t1">'+
+      '<span class="kind '+k+'">'+esc(e.event)+'</span>'+esc(e.symbol||e.note||"—")+'</div>'+
+      '<div class="t2">'+esc(bits||new Date(e.receivedAt).toLocaleString("en-GB"))+'</div></div>'+
+      '<button class="go" data-use>'+(e.event==="EXIT"?"Match":"Open")+'</button></div>';}).join("");
+  $("inboxList").querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>useEvent(b.closest(".ev").dataset.id));
+}
+async function useEvent(id){
+  const e=EVENTS.find(x=>x.id===id);if(!e)return;
+  if(!cur){toast("Create an account first");$("acBtn").click();return;}
+  if(e.event==="EXIT"){
+    const cands=openT().filter(t=>!e.symbol||t.symbol===e.symbol);
+    const t=chrono(cands).slice(-1)[0];
+    if(!t){toast("No open trade on "+(e.symbol||"that symbol")+" to match");return;}
+    t.exit=e.exit;t.reason=e.reason||t.reason;
+    if(e.mae!=null)t.mae=e.mae;if(e.mfe!=null)t.mfe=e.mfe;
+    t.status="closed";t.closedAt=Date.now();
+    const r=calcR(t);if(r!=null)t.r=r;
+    stamp(t);e.used=true;await S.set(TK(),T);await saveEvents();queuePush();render();
+    toast("Closed "+t.symbol+" — add the P&L and write-up");
+    openClose(t.id);return;
+  }
+  const t={id:uid("t"),acc:cur,date:ymd(new Date(e.receivedAt)),ts:e.receivedAt,
+    symbol:e.symbol||"?",dir:e.direction||"",status:"open",
+    entry:e.entry,stop:e.stop,target:e.target,exit:null,pnl:0,r:null,
+    session:"",timeframe:e.timeframe||"",model:e.model||"",version:e.version||"",
+    fromInd:true,indicator:e.model||"TradingView alert",
+    sweep:e.sweep?e.sweep.replace(/_/g," ").toLowerCase().replace(/^./,c=>c.toUpperCase()):"",
+    ifvg:e.ifvg?e.ifvg.toLowerCase().replace(/^./,c=>c.toUpperCase()):"",
+    tags:[],broke:[],what:"",lesson:"",shots:0,source:"tradingview",tvId:e.id,openedAt:e.receivedAt};
+  T.unshift(stamp(t));e.used=true;
+  await S.set(TK(),T);await saveEvents();queuePush();render();
+  toast("Opened "+t.symbol+" from TradingView");go("today");
+}
+
+/* ═══ CLOSE SHEET ═══ */
+function openClose(id){
+  const t=T.find(x=>x.id===id);if(!t)return;closing=id;
+  $("ciT").textContent=t.symbol+(t.dir?" · "+t.dir:"");
+  $("ciS").textContent=[t.entry!=null?"entry "+t.entry:"",t.stop!=null?"stop "+t.stop:"",
+    t.target!=null?"target "+t.target:""].filter(Boolean).join(" · ")||"no levels recorded";
+  $("c-exit").value=t.exit!=null?t.exit:"";
+  $("c-pnl").value=t.pnl||"";$("c-r").value=t.r!=null?t.r:"";
+  $("c-reason").value=t.reason||"";$("cPnlLab").textContent="P&L "+sym();
+  const rr=plannedRR(t);
+  $("cRHint").textContent=rr?"Planned "+rr.toFixed(2)+"R at target. Leave blank and I'll work it out from the exit.":"Leave blank and I'll work it out from entry, stop and exit.";
+  $("closeSheet").classList.add("on");
+}
+$("c-exit").oninput=()=>{
+  const t=T.find(x=>x.id===closing);if(!t)return;
+  const r=calcR({...t,exit:num($("c-exit").value)});
+  if(r!=null&&!$("c-r").value)$("cRHint").textContent="That exit works out at "+(r>0?"+":"")+r.toFixed(2)+"R.";
+};
+$("doClose").onclick=async()=>{
+  const t=T.find(x=>x.id===closing);if(!t)return;
+  t.exit=num($("c-exit").value);t.pnl=num($("c-pnl").value)||0;
+  t.reason=$("c-reason").value;t.status="closed";t.closedAt=Date.now();
+  const manual=num($("c-r").value);
+  t.r=manual!=null?manual:(calcR(t)!=null?calcR(t):t.r);
+  stamp(t);await S.set(TK(),T);queuePush();
+  $("closeSheet").classList.remove("on");render();toast("Trade closed");
+};
+
+/* ══════ SYNC ══════
+   Record-level merge: every trade, account and rule carries updatedAt,
+   and the newest copy of each id wins. Deletions are kept as stamps in
+   GRAVE so a record deleted on one device doesn't come back from the
+   other. */
+let GRAVE={},syncTimer=null,syncState="off",pushSoon=null,syncing=false;
+const GVK=()=>NS+"grave";
+const nowT=()=>Date.now();
+function stamp(o){o.updatedAt=nowT();return o;}
+async function saveGrave(){await S.set(GVK(),GRAVE);}
+async function bury(id){GRAVE[id]=nowT();await saveGrave();}
+
+function syPaint(){
+  const b=$("syBtn");
+  b.className="hbtn "+(syncState==="on"?"on":syncState==="bad"?"bad":"off");
+  $("syLabel").textContent=syncState==="on"?"Synced":syncState==="bad"?"Sync error":"Sync";
+  const hh=$("syHealth");if(!hh)return;
+  const t=$("syT"),s=$("syS");
+  if(syncState==="on"){hh.className="hs info";t.textContent="Syncing";
+    s.textContent=(SET.syLast?"Last synced "+new Date(SET.syLast).toLocaleTimeString("en-GB"):"waiting")+
+      " · journal "+(SET.syId||"—");}
+  else if(syncState==="bad"){hh.className="hs bad";t.textContent="Sync problem";
+    s.textContent=SET.syErr||"Check the URL, ID and key.";}
+  else{hh.className="hs";t.textContent="Off";s.textContent="Your journal stays on this device.";}
+}
+function syFill(){
+  $("sy-url").value=SET.syUrl||"";$("sy-id").value=SET.syId||"";$("sy-key").value=SET.syKey||"";
+  $("segSync").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===(SET.sync?"on":"off")));
+}
+$("segSync").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segSync").querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");});
+$("sySave").onclick=async()=>{
+  SET.syUrl=$("sy-url").value.trim().replace(/\/+$/,"");
+  SET.syId=$("sy-id").value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,"");
+  SET.syKey=$("sy-key").value.trim();
+  SET.sync=$("segSync").querySelector("button.on").dataset.v==="on";
+  if(SET.sync){
+    if(!SET.syUrl){toast("Add the worker URL");return;}
+    if(SET.syId.length<3){toast("Journal ID needs 3+ characters");return;}
+    if(SET.syKey.length<6){toast("Key needs 6+ characters");return;}
+  }
+  await S.set(GK(),SET);syFill();startSync();await syncNow(true);};
+$("syNow").onclick=()=>syncNow(true);
+$("syBtn").onclick=()=>{if(ME)$("profBtn").click();};
+
+function syURL(path,extra){
+  const u=new URL(SET.syUrl+path);
+  u.searchParams.set("u",SET.syId);u.searchParams.set("k",SET.syKey);
+  if(extra)for(const k in extra)u.searchParams.set(k,extra[k]);
+  return u.toString();
+}
+function snapshot(){
+  return{v:1,trades:T,accounts:ACC,rules:RULES,settings:{limit:SET.limit,loss:SET.loss},
+    indicators:INDS,grave:GRAVE};
+}
+function newest(a,b){
+  const ta=(a&&(a.updatedAt||a.ts))||0,tb=(b&&(b.updatedAt||b.ts))||0;
+  return tb>ta?b:a;
+}
+function mergeList(mine,theirs,grave){
+  const m=new Map();
+  (mine||[]).forEach(x=>x&&x.id&&m.set(x.id,x));
+  (theirs||[]).forEach(x=>{if(!x||!x.id)return;
+    m.set(x.id, m.has(x.id)?newest(m.get(x.id),x):x);});
+  const out=[];
+  m.forEach((v,id)=>{
+    const d=grave[id];
+    if(d&&d>=((v.updatedAt||v.ts)||0))return;   // deleted after last edit
+    out.push(v);});
+  return out;
+}
+function mergeDoc(remote){
+  if(!remote)return false;
+  GRAVE={...(remote.grave||{}),...GRAVE};
+  for(const id in remote.grave||{}) if(!GRAVE[id]||remote.grave[id]>GRAVE[id])GRAVE[id]=remote.grave[id];
+  const before=JSON.stringify([T.length,ACC.length,RULES.length]);
+  T=mergeList(T,remote.trades,GRAVE);
+  ACC=mergeList(ACC,remote.accounts,GRAVE);
+  RULES=mergeList(RULES,remote.rules,GRAVE);
+  (remote.indicators||[]).forEach(n=>{if(n&&!INDS.includes(n))INDS.push(n);});
+  if(remote.settings){
+    if(SET.limit==null&&remote.settings.limit!=null)SET.limit=remote.settings.limit;
+    if(SET.loss==null&&remote.settings.loss!=null)SET.loss=remote.settings.loss;}
+  return before!==JSON.stringify([T.length,ACC.length,RULES.length]);
+}
+async function persistAll(){
+  await S.set(TK(),T);await S.set(AK(),ACC);await S.set(RK(),RULES);
+  await S.set(IK(),INDS);await S.set(GK(),SET);await saveGrave();
+}
+async function syncNow(manual){
+  if(!SET.sync||!SET.syUrl||!SET.syId||!SET.syKey){if(manual)toast("Fill in the sync details first");return;}
+  if(syncing){if(manual)toast("Already syncing");return;}
+  syncing=true;
+  try{
+    const r=await fetch(syURL("/doc"),{method:"GET",mode:"cors"});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||("http "+r.status));
+    const changed=mergeDoc(d.doc);
+    const body={base:d.version,doc:snapshot()};
+    let p=await fetch(syURL("/doc"),{method:"POST",mode:"cors",
+      headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    let pj=await p.json();
+    if(pj.conflict){                      // someone pushed between our read and write
+      mergeDoc(pj.doc);
+      p=await fetch(syURL("/doc"),{method:"POST",mode:"cors",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({base:pj.version,doc:snapshot()})});
+      pj=await p.json();
+    }
+    if(!p.ok||pj.error)throw new Error(pj.error||("http "+p.status));
+    SET.syLast=Date.now();SET.syErr=null;syncState="on";
+    await persistAll();
+    if(changed)render();else{syPaint();}
+    if(manual)toast("In step — "+T.length+" trades");
+  }catch(e){
+    syncState="bad";SET.syErr=String(e.message||e);
+    await S.set(GK(),SET);syPaint();
+    if(manual)toast("Sync failed — "+SET.syErr);
+  }
+  syncing=false;
+}
+function queuePush(){
+  if(!SET.sync)return;
+  clearTimeout(pushSoon);pushSoon=setTimeout(()=>syncNow(false),3000);
+}
+function startSync(){
+  if(syncTimer){clearInterval(syncTimer);syncTimer=null;}
+  if(SET.sync&&SET.syUrl&&SET.syId&&SET.syKey){syncState="on";syncTimer=setInterval(()=>syncNow(false),60000);}
+  else syncState="off";
+  syPaint();
+}
+addEventListener("visibilitychange",()=>{if(!document.hidden&&SET.sync)syncNow(false);});
+
+/* pull a trade's screenshots from the server if this device hasn't got them */
+async function remoteShots(id){
+  if(!SET.sync||!SET.syUrl)return null;
+  try{const r=await fetch(syURL("/shot",{id}),{mode:"cors"});
+    const d=await r.json();return r.ok&&d.shots&&d.shots.length?d.shots:null;}catch(e){return null;}
+}
+async function pushShots(id,arr){
+  if(!SET.sync||!SET.syUrl)return;
+  try{await fetch(syURL("/shot",{id}),{method:"POST",mode:"cors",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify({shots:arr||[]})});}catch(e){}
+}
+
+/* ═══ TODAY ═══ */
+function today(){
+  const a=acc(),d=ymd(),L=closed().filter(t=>t.date===d),O=openT();
+  const net=L.reduce((s,t)=>s+(t.pnl||0),0);
+  $("todayK").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+  $("todayV").textContent=L.length?((net>0?"+":"")+fm(net)):(O.length?"—":fm(0));
+  $("todayV").className="hero-v m "+(net>0?"mint":net<0?"rose":"");
+  const bits=[];
+  if(L.length)bits.push(L.length+" closed");
+  if(O.length)bits.push(O.length+" still open");
+  $("todayS").textContent=bits.length?bits.join(" · "):"No trades yet today";
+
+  const lim=num(SET.limit),loss=num(SET.loss);
+  const wr=L.filter(t=>t.pnl>0).length;
+  const rToday=L.filter(t=>typeof t.r==="number").reduce((s,t)=>s+t.r,0);
+  const need=closed().filter(needsJ).length;
+  $("todayStats").innerHTML=[
+    ["Trades",L.length+(lim?" / "+lim:""),lim&&L.length>=lim?"rose":"", lim?(L.length>=lim?"limit reached":"of your limit"):""],
+    ["Won",L.length?wr+" / "+L.length:"—","",""],
+    ["R today",L.length?((rToday>0?"+":"")+rToday.toFixed(1)+"R"):"—",rToday>0?"mint":rToday<0?"rose":"",""],
+    ["To journal",need,need?"sun":"mint",need?"write-ups missing":"all done"]
+  ].map(([k,v,c,s])=>'<div class="st"><div class="st-k">'+k+'</div><div class="st-v '+c+'">'+v+'</div>'+
+    (s?'<div class="st-s">'+s+'</div>':'')+'</div>').join("");
+
+  /* banners */
+  const slot=$("bannerSlot");let html="";
+  if(loss&&net<=-Math.abs(loss))
+    html+='<div class="banner bad"><div class="t"><b>Daily loss limit hit</b> — you\'re '+fm(net)+' on the day against a '+fm0(-Math.abs(loss))+' limit.</div></div>';
+  else if(lim&&L.length>=lim)
+    html+='<div class="banner"><div class="t"><b>Daily trade limit reached</b> — '+L.length+' of '+lim+' taken.</div></div>';
+  const bk=bkState();
+  if(bk.lvl!=="ok"&&T.length)
+    html+='<div class="banner'+(bk.lvl==="bad"?" bad":"")+'"><div class="t"><b>'+esc(bk.t)+'</b> — '+esc(bk.s)+'</div><button id="bnGo">Back up</button></div>';
+  slot.innerHTML=html;
+  const g=$("bnGo");if(g)g.onclick=openBk;
+
+  /* live */
+  $("liveCard").style.display=O.length?"":"none";
+  $("liveMeta").textContent=O.length+" running";
+  $("liveList").innerHTML=chrono(O).reverse().map(t=>{
+    const rr=plannedRR(t);
+    return '<div class="live" data-id="'+t.id+'"><div class="live-h">'+
+      '<span class="s">'+esc(t.symbol)+'</span>'+
+      (t.dir?'<span class="pill '+(t.dir==="Long"?"L":"S")+'">'+t.dir+'</span>':'')+
+      '<span class="live-tag">OPEN</span>'+
+      (t.source==="tradingview"?'<span class="pill tv">TV</span>':'')+
+      (t.model?'<span class="pill">'+esc(t.model)+'</span>':'')+'</div>'+
+      '<div class="lvgrid">'+
+      '<div class="lv"><div class="k">Entry</div><div class="v">'+(t.entry!=null?t.entry:"—")+'</div></div>'+
+      '<div class="lv"><div class="k">Stop</div><div class="v rose">'+(t.stop!=null?t.stop:"—")+'</div></div>'+
+      '<div class="lv"><div class="k">Target</div><div class="v mint">'+(t.target!=null?t.target:"—")+'</div></div>'+
+      '<div class="lv"><div class="k">Planned</div><div class="v">'+(rr?rr.toFixed(1)+"R":"—")+'</div></div>'+
+      '</div>'+
+      (rr?'<div class="rrbar"><i class="r1" style="width:'+(100/(1+rr)).toFixed(1)+'%"></i>'+
+        '<i class="r2" style="width:'+(100*rr/(1+rr)).toFixed(1)+'%"></i></div>':'')+
+      '<div class="acts"><button class="btn cy sm" data-close2>Close trade</button>'+
+      '<button class="btn gh sm" data-edit2>Edit</button></div></div>';}).join("");
+  $("liveList").querySelectorAll("[data-close2]").forEach(b=>b.onclick=()=>openClose(b.closest(".live").dataset.id));
+  $("liveList").querySelectorAll("[data-edit2]").forEach(b=>b.onclick=()=>edit(b.closest(".live").dataset.id));
+
+  drawInbox();
+}
+
+/* ═══ LAB ═══ */
+/* ═══ LAB — encrypted ═══
+   The Lab's code is not in this file in readable form. It is an
+   AES-256-GCM ciphertext, unlocked by a key derived from the founder
+   passphrase (PBKDF2-SHA256, 250k iterations). Without the passphrase
+   there is nothing to bypass — the code genuinely isn't here.
+   Wrong passphrase = decryption fails = no Lab. */
+const LAB_BLOB={"s": "GFHkb9hbgrZXC16oeFwZWg==", "i": "BSYdfv2DOzDzZ93V", "d": "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"};
+let LAB=null;
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function unlockLab(pass){
+  if(!pass)return false;
+  try{
+    const enc=new TextEncoder();
+    const base=await crypto.subtle.importKey("raw",enc.encode(pass),"PBKDF2",false,["deriveKey"]);
+    const key=await crypto.subtle.deriveKey(
+      {name:"PBKDF2",salt:b64(LAB_BLOB.s),iterations:250000,hash:"SHA-256"},
+      base,{name:"AES-GCM",length:256},false,["decrypt"]);
+    const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(LAB_BLOB.i)},key,b64(LAB_BLOB.d));
+    LAB=new Function("return "+new TextDecoder().decode(plain))();
+    return !!(LAB&&LAB.lab);
+  }catch(e){LAB=null;return false;}
+}
+function lab(){ if(LAB&&LAB.lab)LAB.lab(); }
+
+/* ═══ FORM ═══ */
+function fillSessions(){
+  const s=$("i-ses"),keep=s.value;
+  s.innerHTML='<option value="">—</option>'+SESSIONS.map(([n,t])=>
+    '<option value="'+n+'">'+n+' · '+t+'</option>').join("");
+  s.value=SESSIONS.some(x=>x[0]===keep)?keep:"";
+}
+function tags(){const b=$("tagBox");b.innerHTML="";
+  TAGS.concat(custom).forEach(t=>{const e=document.createElement("button");e.type="button";
+    e.className="tg"+(sel.has(t)?" on":"");e.textContent=t;
+    e.onclick=()=>{sel.has(t)?sel.delete(t):sel.add(t);e.classList.toggle("on");};b.appendChild(e);});}
+tags();
+$("addTag").onclick=()=>{const v=$("i-newtag").value.trim();if(!v)return;
+  if(!TAGS.includes(v)&&!custom.includes(v))custom.push(v);sel.add(v);$("i-newtag").value="";tags();};
+$("i-newtag").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("addTag").click();}};
+$("segDir").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  const on=b.classList.contains("on");
+  $("segDir").querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  if(!on)b.classList.add("on");dir=on?"":b.dataset.v;});
+let fromInd=false;
+$("segInd").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segInd").querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");fromInd=b.dataset.v==="yes";
+  $("indFold").style.display=fromInd?"":"none";
+  if(fromInd){$("indFold").open=true;fillInds();}});
+$("addInd").onclick=async()=>{const v=await addInd($("i-newind").value);
+  if(v){$("i-newind").value="";$("i-ind").value=v;toast("Indicator added");}};
+$("i-newind").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("addInd").click();}};
+$("pfAddInd").onclick=async()=>{const v=await addInd($("pf-newind").value);
+  if(v){$("pf-newind").value="";toast("Indicator added");}};
+$("pf-newind").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("pfAddInd").click();}};
+$("pfKeyGo").onclick=async()=>{
+  const k=$("pfKey").value.trim();
+  if(!await unlockLab(k)){toast("That code isn't recognised");return;}
+  ME.role="founder";ME.key=k;
+  const i=USERS.findIndex(u=>u.id===ME.id);if(i>-1)USERS[i]=ME;
+  await saveUsers();$("pfKey").value="";$("pfUnlock").style.display="none";
+  paintMe();lab();toast("Lab unlocked");};
+$("pfKey").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("pfKeyGo").click();}};
+$("pfSwitch").onclick=()=>{$("profSheet").classList.remove("on");signOut();};
+$("pfOut").onclick=()=>signOut();
+
+$("segStat").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segStat").querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");tstat=b.dataset.v;
+  $("closeFields").style.display=tstat==="open"?"none":"";});
+["i-entry","i-stop","i-exit"].forEach(id=>$(id).addEventListener("input",()=>{
+  const r=calcR({entry:$("i-entry").value,stop:$("i-stop").value,exit:$("i-exit").value,dir});
+  $("rHint").textContent=r!=null?"Works out at "+(r>0?"+":"")+r.toFixed(2)+"R — leave the box blank to use it.":
+    "Worked out for you when entry, stop and exit are filled.";}));
+
+$("drop").onclick=()=>$("file").click();
+$("file").onchange=e=>files(e.target.files);
+["dragenter","dragover"].forEach(v=>$("drop").addEventListener(v,e=>{e.preventDefault();$("drop").classList.add("over");}));
+["dragleave","drop"].forEach(v=>$("drop").addEventListener(v,e=>{e.preventDefault();$("drop").classList.remove("over");}));
+$("drop").addEventListener("drop",e=>files(e.dataTransfer.files));
+function squash(f){return new Promise((res,rej)=>{const r=new FileReader();
+  r.onload=()=>{const i=new Image();
+    i.onload=()=>{const s=Math.min(1,1400/Math.max(i.width,i.height));
+      const c=document.createElement("canvas");c.width=Math.round(i.width*s)||1;c.height=Math.round(i.height*s)||1;
+      c.getContext("2d").drawImage(i,0,0,c.width,c.height);
+      try{res(c.toDataURL("image/jpeg",.72));}catch(e){res(r.result);}};
+    i.onerror=()=>rej(0);i.src=r.result;};r.onerror=()=>rej(0);r.readAsDataURL(f);});}
+async function files(l){
+  if(BACKEND==="ls"&&(l||[]).length)toast("Limited storage here — screenshots may not save");
+  for(const f of Array.from(l||[])){if(!f.type.startsWith("image/"))continue;
+  try{pending.push(await squash(f));}catch(e){toast("Couldn't read that image");}}
+  shots();$("file").value="";}
+function shots(){const g=$("shotGrid");g.innerHTML="";
+  pending.forEach((d,i)=>{const w=document.createElement("div");w.className="shot";
+    w.innerHTML='<img src="'+d+'" alt="Screenshot"><button type="button">×</button>';
+    w.querySelector("img").onclick=()=>lb(d);
+    w.querySelector("button").onclick=()=>{pending.splice(i,1);shots();};g.appendChild(w);});}
+function lb(s){$("lbImg").src=s;$("lb").classList.add("on");}
+$("lbX").onclick=()=>$("lb").classList.remove("on");
+$("lb").onclick=e=>{if(e.target.id==="lb")$("lb").classList.remove("on");};
+addEventListener("keydown",e=>{if(e.key==="Escape"){
+  document.querySelectorAll(".ov.on,.lb.on").forEach(x=>x.classList.remove("on"));
+  if($("dlg").classList.contains("on")){$("dlg").classList.remove("on");if(dlgRes)dlgRes(false);dlgRes=null;}}});
+
+$("save").onclick=async()=>{
+  if(!cur){toast("Create an account first");$("acBtn").click();return;}
+  const s=$("i-sym").value.trim().toUpperCase();
+  if(!s){toast("Add an instrument first");$("i-sym").focus();return;}
+  const id=editing||uid("t");
+  const prev=editing?T.find(x=>x.id===id):null;
+  const t={id,acc:cur,date:$("i-date").value||ymd(),symbol:s,dir,status:tstat,
+    entry:num($("i-entry").value),stop:num($("i-stop").value),target:num($("i-target").value),
+    exit:tstat==="open"?null:num($("i-exit").value),
+    pnl:tstat==="open"?0:(num($("i-pnl").value)||0),
+    session:$("i-ses").value,timeframe:$("i-tf").value,model:$("i-model").value.trim(),
+    version:fromInd?$("i-ver").value.trim():"",sweep:$("i-sweep").value,ifvg:$("i-ifvg").value,
+    fromInd:fromInd,indicator:fromInd?$("i-ind").value:"",
+    reason:$("i-reason").value,mae:num($("i-mae").value),mfe:num($("i-mfe").value),
+    tags:[...sel],broke:[...brk],what:$("i-what").value.trim(),lesson:$("i-lesson").value.trim(),
+    shots:pending.length,source:(prev&&prev.source)||"manual",tvId:prev&&prev.tvId,
+    ts:(prev&&prev.ts)||Date.now(),openedAt:(prev&&prev.openedAt)||Date.now()};
+  const manualR=num($("i-r").value);
+  t.r=manualR!=null?manualR:(t.status==="open"?null:calcR(t));
+  if(t.status==="closed"&&!t.closedAt)t.closedAt=(prev&&prev.closedAt)||Date.now();
+  stamp(t);
+  const i=T.findIndex(x=>x.id===id);
+  if(i>-1)T[i]=t;else T.unshift(t);
+  SH.set(id,pending.slice());
+  if(pending.length)await S.set(SK(id),pending);else await S.del(SK(id));
+  pushShots(id,pending.slice());
+  const w=await S.set(TK(),T);
+  queuePush();
+  toast(w?(i>-1?"Trade updated":(tstat==="open"?"Trade opened":"Trade logged")):"Saved this session only — copy a backup");
+  reset();render();go(tstat==="open"?"today":"journal");};
+$("cancel").onclick=()=>{reset();go("journal");};
+function reset(){
+  ["i-sym","i-entry","i-stop","i-target","i-exit","i-pnl","i-r","i-what","i-lesson",
+   "i-model","i-ver","i-mae","i-mfe"].forEach(k=>$(k).value="");
+  ["i-ses","i-tf","i-sweep","i-ifvg","i-reason"].forEach(k=>$(k).value="");
+  $("i-date").value=ymd();
+  sel.clear();brk.clear();pending=[];dir="";editing=null;tstat="closed";
+  $("segDir").querySelectorAll("button").forEach(b=>b.classList.remove("on"));
+  $("segStat").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v==="closed"));
+  fromInd=false;$("i-ind").value="";$("i-newind").value="";
+  $("segInd").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v==="no"));
+  $("indFold").style.display="none";$("closeFields").style.display="";$("indFold").open=false;
+  tags();drawBrk();shots();$("fTitle").textContent="New trade";$("fSrc").textContent="";
+  $("cancel").style.display="none";}
+async function getShots(id){
+  if(SH.has(id))return SH.get(id);
+  let v=await S.get(SK(id))||[];
+  if(!v.length){
+    const t=T.find(x=>x.id===id);
+    if(t&&t.shots>0){                       // came from another device
+      const r=await remoteShots(id);
+      if(r&&r.length){v=r;await S.set(SK(id),v);}
+    }
+  }
+  SH.set(id,v);return v;}
+async function edit(id){
+  const t=T.find(x=>x.id===id);if(!t)return;editing=id;
+  $("i-date").value=t.date||"";$("i-sym").value=t.symbol||"";
+  ["entry","stop","target","exit","pnl","r","mae","mfe"].forEach(k=>$("i-"+k).value=(t[k]===0||t[k])?t[k]:"");
+  $("i-ses").value=t.session||"";$("i-tf").value=t.timeframe||"";
+  $("i-model").value=t.model||"";$("i-ver").value=t.version||"";
+  $("i-sweep").value=t.sweep||"";$("i-ifvg").value=t.ifvg||"";$("i-reason").value=t.reason||"";
+  $("i-what").value=t.what||"";$("i-lesson").value=t.lesson||"";
+  dir=t.dir||"";tstat=t.status==="open"?"open":"closed";
+  $("segDir").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===dir));
+  $("segStat").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===tstat));
+  $("closeFields").style.display=tstat==="open"?"none":"";
+  fromInd=!!t.fromInd||!!t.indicator;
+  $("segInd").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===(fromInd?"yes":"no")));
+  $("indFold").style.display=fromInd?"":"none";
+  if(t.indicator&&!INDS.includes(t.indicator))INDS.push(t.indicator);
+  fillInds();$("i-ind").value=t.indicator||"";
+  if(fromInd&&(t.model||t.version||t.sweep||t.ifvg||t.mae!=null||t.mfe!=null))$("indFold").open=true;
+  sel.clear();(t.tags||[]).forEach(x=>{sel.add(x);if(!TAGS.includes(x)&&!custom.includes(x))custom.push(x);});
+  brk.clear();(t.broke||[]).forEach(x=>brk.add(x));
+  pending=(await getShots(id)).slice();tags();drawBrk();shots();
+  $("fTitle").textContent="Edit trade";
+  $("fSrc").textContent=t.source==="tradingview"?"from TradingView":"";
+  $("cancel").style.display="";
+  document.querySelectorAll(".ov.on").forEach(x=>x.classList.remove("on"));go("log");}
+async function del(id){
+  const t=T.find(x=>x.id===id);
+  if(!await ask("Delete this trade?",t?(t.symbol+" · "+t.date+" · "+((t.pnl>0?"+":"")+fm(t.pnl))):""))return;
+  T=T.filter(x=>x.id!==id);SH.delete(id);await S.del(SK(id));await S.set(TK(),T);
+  await bury(id);pushShots(id,[]);queuePush();
+  render();toast("Trade deleted");}
+
+/* ═══ RULES / SETTINGS ═══ */
+$("addRule").onclick=async()=>{const v=$("r-new").value.trim();if(!v)return;
+  RULES.push(stamp({id:uid("r"),text:v}));$("r-new").value="";
+  await S.set(RK(),RULES);queuePush();drawRules();drawBrk();toast("Rule added");};
+$("r-new").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("addRule").click();}};
+const ruleStats=id=>{const h=T.filter(t=>(t.broke||[]).includes(id));
+  return{n:h.length,pnl:h.reduce((s,t)=>s+(t.pnl||0),0)};};
+function drawRules(){
+  const box=$("ruleList");
+  if(!RULES.length)box.innerHTML='<div style="font-size:14.5px;color:var(--dim);line-height:1.7">'+
+    'No rules yet. Write the ones you actually break — those are the only ones worth tracking.</div>';
+  else{box.innerHTML=RULES.map((r,i)=>{const s=ruleStats(r.id),cls=s.n===0?"clean":s.pnl<0?"costly":"";
+    const line=s.n===0?"Never broken":"Broken "+s.n+"× · "+(s.pnl>0?"+":"")+fm(s.pnl)+" on those trades";
+    return '<div class="rule '+cls+'" data-id="'+r.id+'"><span class="n">'+String(i+1).padStart(2,"0")+'</span>'+
+      '<span class="b"><span class="tx">'+esc(r.text)+'</span><span class="st2">'+line+'</span></span>'+
+      '<button class="x" data-del>×</button></div>';}).join("");
+    box.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{
+      const id=b.closest(".rule").dataset.id,r=RULES.find(x=>x.id===id);
+      if(!await ask("Delete this rule?",r?r.text:""))return;
+      RULES=RULES.filter(x=>x.id!==id);
+      T.forEach(t=>{if(t.broke&&t.broke.includes(id)){t.broke=t.broke.filter(x=>x!==id);stamp(t);}});
+      await bury(id);await S.set(RK(),RULES);await S.set(TK(),T);queuePush();
+      drawRules();drawBrk();toast("Rule deleted");});}
+  const left=SUGG.filter(s=>!RULES.some(r=>r.text===s));
+  $("suggWrap").style.display=left.length?"":"none";
+  $("sugg").innerHTML=left.map(s=>'<button class="sg">'+esc(s)+'</button>').join("");
+  $("sugg").querySelectorAll(".sg").forEach((b,i)=>b.onclick=async()=>{
+    RULES.push(stamp({id:uid("r"),text:left[i]}));await S.set(RK(),RULES);queuePush();drawRules();drawBrk();});}
+function drawBrk(){
+  $("brkWrap").style.display=RULES.length?"":"none";
+  const b=$("brkBox");b.innerHTML="";
+  RULES.forEach(r=>{const e=document.createElement("button");e.type="button";
+    e.className="tg brk"+(brk.has(r.id)?" on":"");e.textContent=r.text;
+    e.onclick=()=>{brk.has(r.id)?brk.delete(r.id):brk.add(r.id);e.classList.toggle("on");};b.appendChild(e);});}
+$("saveSet").onclick=async()=>{
+  SET.limit=num($("s-limit").value);SET.loss=num($("s-loss").value);
+  await S.set(GK(),SET);queuePush();render();toast("Limits saved");};
+
+/* ═══ ACCOUNTS ═══ */
+$("acBtn").onclick=()=>{drawAcList();$("acSheet").classList.add("on");};
+$("newAc").onclick=()=>{$("acSheet").classList.remove("on");openAc(null);};
+function drawAcList(){
+  const box=$("acList");
+  if(!ACC.length){box.innerHTML='<div style="font-size:14px;color:var(--dim);padding:6px 2px">No accounts yet.</div>';return;}
+  box.innerHTML=ACC.map(a=>{const n=T.filter(t=>t.acc===a.id),
+    net=n.filter(t=>t.status!=="open").reduce((s,t)=>s+(t.pnl||0),0),bal=(a.start||0)+net;
+    return '<div class="acrow'+(a.id===cur?" on":"")+'" data-id="'+a.id+'"><span class="l"><span class="n">'+
+      esc(a.name)+'<span class="badge '+(a.type==="Demo"?"demo":"live")+'">'+esc(a.type||"Live").toUpperCase()+'</span></span>'+
+      '<span class="s">'+(SY[a.ccy]||"£")+bal.toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})+
+      ' · '+n.length+' trade'+(n.length===1?'':'s')+'</span></span><button class="e" data-edit>Edit</button></div>';}).join("");
+  box.querySelectorAll(".acrow").forEach(r=>r.onclick=e=>{
+    if(e.target.hasAttribute("data-edit")){openAc(r.dataset.id);$("acSheet").classList.remove("on");return;}
+    cur=r.dataset.id;S.set(CK(),cur);$("acSheet").classList.remove("on");render();});}
+$("segType").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segType").querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");atype=b.dataset.v;});
+function openAc(id){editAc=id;const a=id?ACC.find(x=>x.id===id):null;
+  $("afTitle").textContent=a?"Edit account":"Create account";
+  $("a-name").value=a?a.name:"";$("a-ccy").value=a?a.ccy:"GBP";$("a-start").value=a?a.start:"";
+  atype=a?(a.type||"Live"):"Demo";
+  $("segType").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===atype));
+  $("delAc").style.display=a?"":"none";$("acForm").classList.add("on");}
+$("saveAc").onclick=async()=>{
+  const name=$("a-name").value.trim();
+  if(!name){toast("Give the account a name");$("a-name").focus();return;}
+  const o={id:editAc||uid("a"),name,type:atype||"Demo",ccy:$("a-ccy").value,start:num($("a-start").value)||0};
+  stamp(o);
+  const i=ACC.findIndex(x=>x.id===o.id);
+  if(i>-1)ACC[i]=o;else{ACC.push(o);cur=o.id;await S.set(CK(),cur);}
+  await S.set(AK(),ACC);queuePush();$("acForm").classList.remove("on");
+  toast(i>-1?"Account updated":"Account created");render();};
+$("delAc").onclick=async()=>{
+  const a=ACC.find(x=>x.id===editAc);if(!a)return;
+  const n=T.filter(t=>t.acc===a.id).length;
+  if(!await ask("Delete this account?",'"'+a.name+'"'+(n?" and its "+n+" trade"+(n===1?"":"s"):"")+" will be removed."))return;
+  for(const t of T.filter(t=>t.acc===a.id))await S.del(SK(t.id));
+  for(const t of T.filter(t=>t.acc===a.id))await bury(t.id);
+  T=T.filter(t=>t.acc!==a.id);ACC=ACC.filter(x=>x.id!==a.id);
+  await bury(a.id);
+  if(cur===a.id)cur=ACC.length?ACC[0].id:null;
+  await S.set(AK(),ACC);await S.set(TK(),T);await S.set(CK(),cur);queuePush();
+  $("acForm").classList.remove("on");toast("Account deleted");render();};
+
+/* ═══ CALENDAR ═══ */
+$("pm").onclick=()=>{calM--;if(calM<0){calM=11;calY--;}calendar();};
+$("nm").onclick=()=>{calM++;if(calM>11){calM=0;calY++;}calendar();};
+function byDay(){const m=new Map();
+  mine().forEach(t=>{const o=m.get(t.date)||{p:0,n:0,open:0};
+    if(t.status==="open")o.open++;else{o.p+=(t.pnl||0);}
+    o.n++;m.set(t.date,o);});return m;}
+function calendar(){
+  const box=$("cal"),map=byDay();
+  $("monT").textContent=MN[calM]+" "+calY;
+  const days=new Date(calY,calM+1,0).getDate(),first=new Date(calY,calM,1).getDay();
+  const lead=(first===0||first===6)?0:first-1;
+  const cells=[];for(let i=0;i<lead;i++)cells.push(null);
+  const todayS=ymd();
+  let mNet=0,mTr=0,gd=0,rd=0,best=0,worst=0;const seen=[];
+  const wknd=[];
+  for(let d=1;d<=days;d++){
+    const key=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+    const w=new Date(calY,calM,d).getDay(),o=map.get(key);
+    if(w===0||w===6){if(o)wknd.push({key,o,d,w});continue;}
+    if(o){mNet+=o.p;mTr+=o.n;if(o.p>0)gd++;else if(o.p<0)rd++;
+      best=Math.max(best,o.p);worst=Math.min(worst,o.p);seen.push(o);}
+    cells.push({d,key,o,today:key===todayS});}
+  wknd.forEach(x=>{mNet+=x.o.p;mTr+=x.o.n;if(x.o.p>0)gd++;else if(x.o.p<0)rd++;
+    best=Math.max(best,x.o.p);worst=Math.min(worst,x.o.p);});
+  const mx=Math.max(1,...seen.map(o=>Math.abs(o.p)),...wknd.map(x=>Math.abs(x.o.p)));
+  box.innerHTML=cells.map(c=>{
+    if(!c)return '<div class="cd void"></div>';
+    if(!c.o)return '<div class="cd'+(c.today?" today":"")+'"><span class="dn">'+c.d+'</span></div>';
+    const cls=c.o.p>0?"win":c.o.p<0?"loss":"flat";
+    const it=(Math.abs(c.o.p)/mx)*.32+.10;
+    const bg=c.o.p>0?"rgba(63,245,192,"+it.toFixed(2)+")":c.o.p<0?"rgba(255,107,138,"+it.toFixed(2)+")":"rgba(255,255,255,.06)";
+    const av=Math.abs(c.o.p);
+    const sh=(c.o.p>0?"+":c.o.p<0?"−":"")+sym()+
+      (av>=10000?(av/1000).toFixed(0)+"k":av>=1000?(av/1000).toFixed(1)+"k":Math.round(av).toLocaleString("en-GB"));
+    return '<div class="cd has '+cls+(c.today?" today":"")+'" style="background:'+bg+'" data-k="'+c.key+'">'+
+      '<span class="dn">'+c.d+'</span>'+(c.o.open?'<span class="open"></span>':'')+
+      '<span class="pv">'+sh+'</span><span class="tn">'+c.o.n+' trade'+(c.o.n===1?"":"s")+'</span></div>';}).join("");
+  box.querySelectorAll(".cd.has").forEach(e=>e.onclick=()=>daySheet(e.dataset.k));
+
+  $("wkndSlot").innerHTML=wknd.length?'<div class="note" style="margin-top:14px">Weekend trades this month — '+
+    wknd.map(x=>'<button class="chip" data-k="'+x.key+'" style="cursor:pointer">'+
+      ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][x.w]+" "+x.d+" · "+(x.o.p>0?"+":"")+fm0(x.o.p)+'</button>').join(" ")+
+    '<br>They count in the totals below but have no column above.</div>':"";
+  $("wkndSlot").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>daySheet(b.dataset.k));
+
+  $("monS").textContent=(mNet>0?"+":"")+fm(mNet);
+  $("monS").className="s m "+(mNet>0?"mint":mNet<0?"rose":"");
+  $("monStats").innerHTML=[["Green days",gd,"mint"],["Red days",rd,"rose"],["Trades",mTr,""],
+   ["Best day",best?fm0(best):"—","mint"],["Worst day",worst?fm0(worst):"—","rose"],
+   ["Avg / day",(gd+rd)?fm0(mNet/(gd+rd)):"—",mNet>0?"mint":mNet<0?"rose":""]
+  ].map(([k,v,c])=>'<div class="st"><div class="st-k">'+k+'</div><div class="st-v '+c+'" style="font-size:19px">'+v+'</div></div>').join("");}
+function daySheet(key){
+  const L=mine().filter(t=>t.date===key);
+  const net=L.filter(t=>t.status!=="open").reduce((s,t)=>s+(t.pnl||0),0);
+  const d=new Date(key+"T12:00:00");
+  $("dsT").innerHTML=d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})+
+    ' <span class="m '+(net>0?"mint":net<0?"rose":"")+'" style="font-size:16px">'+(net>0?"+":"")+fm(net)+'</span>';
+  $("dsBody").innerHTML=L.map(t=>
+    '<div class="dayrow" data-id="'+t.id+'"><span class="l"><span class="s2">'+esc(t.symbol)+
+    (t.dir?' <span class="pill '+(t.dir==="Long"?"L":"S")+'">'+t.dir+'</span>':'')+
+    (t.status==="open"?' <span class="pill tv">OPEN</span>':'')+'</span>'+
+    '<span class="m2">'+esc([t.session,t.model,t.timeframe].filter(Boolean).join(" · ")||"—")+'</span></span>'+
+    '<span class="p2 '+(t.pnl>0?"mint":t.pnl<0?"rose":"")+'">'+
+    (t.status==="open"?"—":((t.pnl>0?"+":"")+fm(t.pnl)))+'</span></div>').join("")||
+    '<div class="note">Nothing on this day.</div>';
+  $("dsBody").querySelectorAll(".dayrow").forEach(r=>r.onclick=()=>edit(r.dataset.id));
+  $("daySheet").classList.add("on");}
+
+/* ═══ LIST ═══ */
+function listView(){
+  const q=$("q").value.toLowerCase().trim(),f=$("fOut").value;
+  let L=mine().filter(t=>{
+    if(f==="Open"&&t.status!=="open")return false;
+    if(f==="Wins"&&!(t.pnl>0&&t.status!=="open"))return false;
+    if(f==="Losses"&&!(t.pnl<0&&t.status!=="open"))return false;
+    if(f==="Needs journalling"&&!needsJ(t))return false;
+    if(q&&![t.symbol,t.session,t.model,t.what,t.lesson,t.date,(t.tags||[]).join(" ")]
+      .join(" ").toLowerCase().includes(q))return false;
+    return true;});
+  L=chrono(L).reverse();
+  const box=$("list");
+  if(!L.length){box.innerHTML='<div class="card empty"><h4>'+(!cur?"No account yet":mine().length?"Nothing matches":"No trades yet")+'</h4><p>'+
+    (!cur?"Create an account and its journal starts here.":mine().length?"Try clearing the filter.":"Log one and everything fills in from it.")+'</p></div>';return;}
+  box.innerHTML=L.map(t=>{
+    const op=t.status==="open";
+    return '<article class="tr '+(op?"openpos":t.pnl>0?"win":t.pnl<0?"loss":"")+'" data-id="'+t.id+'">'+
+    '<div class="trh"><div class="trl"><div class="tr1">'+
+    '<span class="sym">'+esc(t.symbol)+'</span>'+
+    (t.dir?'<span class="pill '+(t.dir==="Long"?"L":"S")+'">'+t.dir+'</span>':'')+
+    (op?'<span class="pill tv">OPEN</span>':'')+
+    (t.source==="tradingview"?'<span class="pill tv">TV</span>':'')+
+    (t.indicator?'<span class="pill">'+esc(t.indicator)+'</span>':'')+
+    (needsJ(t)?'<span class="pill todo">Journal</span>':'')+
+    ((t.broke||[]).length?'<span class="pill brk">'+t.broke.length+' rule'+(t.broke.length===1?"":"s")+'</span>':'')+
+    '</div><div class="tr2">'+esc([t.date,t.session,t.model,t.timeframe].filter(Boolean).join(" · "))+
+    (t.shots?" · "+t.shots+" shot"+(t.shots===1?"":"s"):"")+'</div></div>'+
+    '<div class="trr"><div class="pnl '+(op?"vio":t.pnl>0?"mint":t.pnl<0?"rose":"")+'">'+
+    (op?"OPEN":((t.pnl>0?"+":"")+fm(t.pnl||0)))+'</div>'+
+    '<div class="rr">'+(typeof t.r==="number"?((t.r>0?"+":"")+t.r.toFixed(1)+"R"):"—")+'</div></div></div>'+
+    '<div class="trb" data-b></div></article>';}).join("");
+  box.querySelectorAll(".tr").forEach(e=>e.querySelector(".trh").onclick=()=>open_(e));}
+async function open_(e){
+  if(e.classList.contains("open")){e.classList.remove("open");return;}
+  const id=e.dataset.id,t=T.find(x=>x.id===id);if(!t)return;
+  const sh=await getShots(id);
+  const bk=(t.broke||[]).map(x=>RULES.find(r=>r.id===x)).filter(Boolean);
+  const kv=[["Source",t.indicator||(t.fromInd?"Indicator":"Discretionary")],
+    ["Entry",t.entry],["Stop",t.stop],["Target",t.target],["Exit",t.exit],
+    ["Planned",plannedRR(t)?plannedRR(t).toFixed(2)+"R":null],["Reason",t.reason],
+    ["Model",t.model],["Version",t.version],["Timeframe",t.timeframe],
+    ["Sweep",t.sweep],["IFVG",t.ifvg],
+    ["MAE",t.mae!=null?t.mae+"R":null],["MFE",t.mfe!=null?t.mfe+"R":null]]
+    .filter(([,v])=>v!=null&&v!=="").map(([k,v])=>'<div>'+k+'<b>'+esc(v)+'</b></div>').join("");
+  const body=e.querySelector("[data-b]");
+  body.innerHTML=(kv?'<div class="kv">'+kv+'</div>':'')+
+    ((t.tags||[]).length?'<div class="nar"><h5>Reasons</h5><div class="chips">'+
+      t.tags.map(x=>'<span class="chip">'+esc(x)+'</span>').join("")+'</div></div>':'')+
+    (bk.length?'<div class="nar"><h5 class="bad">Rules broken</h5><div class="chips">'+
+      bk.map(r=>'<span class="chip bad">'+esc(r.text)+'</span>').join("")+'</div></div>':'')+
+    (t.what?'<div class="nar"><h5>What happened</h5><p>'+esc(t.what)+'</p></div>':'')+
+    (t.lesson?'<div class="nar"><h5>Lesson</h5><p>'+esc(t.lesson)+'</p></div>':'')+
+    (sh.length?'<div class="nar"><h5>Screenshots</h5><div class="shots">'+
+      sh.map(s=>'<div class="shot"><img src="'+s+'" alt="Screenshot"></div>').join("")+'</div></div>':'')+
+    '<div class="acts" style="margin-top:18px">'+
+    (t.status==="open"?'<button class="btn cy sm" data-c>Close trade</button>':'')+
+    '<button class="btn gh sm" data-e>Edit</button><button class="btn rd sm" data-d>Delete</button></div>';
+  body.querySelectorAll(".shot img").forEach(i=>i.onclick=()=>lb(i.src));
+  const c=body.querySelector("[data-c]");if(c)c.addEventListener("click",ev=>{ev.stopPropagation();openClose(id);});
+  body.querySelector("[data-e]").addEventListener("click",ev=>{ev.stopPropagation();edit(id);});
+  body.querySelector("[data-d]").addEventListener("click",ev=>{ev.stopPropagation();del(id);});
+  e.classList.add("open");}
+$("q").oninput=listView;$("fOut").onchange=listView;
+["labModel","labVer","labTf","labSrc"].forEach(k=>$(k).onchange=lab);
+
+/* ═══ CHART ═══ */
+function smooth(p){
+  if(p.length<3)return "M "+p.map(x=>x.x.toFixed(1)+" "+x.y.toFixed(1)).join(" L ");
+  let d="M "+p[0].x.toFixed(1)+" "+p[0].y.toFixed(1);
+  for(let i=0;i<p.length-1;i++){const p0=p[i-1]||p[i],p1=p[i],p2=p[i+1],p3=p[i+2]||p2,k=.19;
+    d+=" C "+(p1.x+(p2.x-p0.x)*k).toFixed(1)+" "+(p1.y+(p2.y-p0.y)*k).toFixed(1)+
+       " "+(p2.x-(p3.x-p1.x)*k).toFixed(1)+" "+(p2.y-(p3.y-p1.y)*k).toFixed(1)+
+       " "+p2.x.toFixed(1)+" "+p2.y.toFixed(1);}
+  return d;}
+function chart(){
+  const s=$("chart"),W=s.clientWidth||600,H=s.clientHeight||190,a=acc();
+  s.setAttribute("viewBox","0 0 "+W+" "+H);
+  const L=chrono(closed());
+  $("eqMeta").textContent=L.length?L.length+" closed":"";
+  if(!a||!L.length){s.innerHTML='<text x="'+(W/2)+'" y="'+(H/2)+'" text-anchor="middle" class="ct">'+
+    (a?"Your curve starts with the first closed trade":"No account selected")+'</text>';return;}
+  const base=a.start||0,PL=54,PR=12,PT=16,PB=18;
+  let c=base;const raw=[{i:0,v:base}];
+  L.forEach((t,i)=>{c+=(t.pnl||0);raw.push({i:i+1,v:c});});
+  const vs=raw.map(x=>x.v);let lo=Math.min(...vs),hi=Math.max(...vs);
+  const pd=(hi-lo||Math.max(100,Math.abs(base)*.05))*.2;lo-=pd;hi+=pd;
+  const X=i=>PL+(i/(raw.length-1||1))*(W-PL-PR),Y=v=>PT+(1-(v-lo)/((hi-lo)||1))*(H-PT-PB);
+  const pts=raw.map(x=>({x:X(x.i),y:Y(x.v)}));
+  let g="",lab2="";
+  for(let k=0;k<=3;k++){const v=lo+(hi-lo)*k/3,y=Y(v);
+    g+='<line class="gl" x1="'+PL+'" y1="'+y.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+y.toFixed(1)+'"/>';
+    lab2+='<text class="ct" x="'+(PL-8)+'" y="'+(y+3.5).toFixed(1)+'" text-anchor="end">'+fm0(v)+'</text>';}
+  const line=smooth(pts);
+  const area=line+" L "+pts[pts.length-1].x.toFixed(1)+" "+(H-PB)+" L "+pts[0].x.toFixed(1)+" "+(H-PB)+" Z";
+  const by=Y(base);
+  s.innerHTML='<defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">'+
+    '<stop offset="0%" stop-color="#9B7DFF"/><stop offset="52%" stop-color="#4FE3FF"/>'+
+    '<stop offset="100%" stop-color="#3FF5C0"/></linearGradient>'+
+    '<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="#6FD8FF" stop-opacity=".32"/>'+
+    '<stop offset="100%" stop-color="#6FD8FF" stop-opacity="0"/></linearGradient></defs>'+
+    g+lab2+'<path class="eqf" d="'+area+'"/>'+
+    (by>PT&&by<H-PB?'<line class="zl" x1="'+PL+'" y1="'+by.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+by.toFixed(1)+'"/>':'')+
+    '<path class="eq" d="'+line+'"/>';}
+addEventListener("resize",()=>{clearTimeout(window._r);window._r=setTimeout(chart,180);});
+
+/* ═══ BACKUP ═══ */
+const DAY=864e5;
+const daysSince=ts=>ts?Math.floor((Date.now()-ts)/DAY):null;
+function bkState(){
+  if(!ok)return{lvl:"bad",t:"Not saving on this device",s:"Private browsing or blocked storage. Copy a backup before you close this."};
+  if(!T.length)return{lvl:"ok",t:"Saving on this device",s:"Nothing logged yet · "+backendName()};
+  const d=daysSince(lastBk);
+  if(d===null)return{lvl:"warn",t:"Never backed up",s:T.length+" trades saved here only."};
+  if(d>=7)return{lvl:"warn",t:"Last backup "+d+" days ago",
+    s:(lastBk?T.filter(t=>(t.ts||0)>lastBk).length:T.length)+" trades logged since."};
+  return{lvl:"ok",t:d===0?"Backed up today":"Last backup "+d+" day"+(d===1?"":"s")+" ago",
+    s:T.length+" trades · "+ACC.length+" accounts · "+RULES.length+" rules · "+backendName()};}
+function backendName(){
+  return BACKEND==="idb"?"saved in this browser":
+         BACKEND==="ls"?"saved in this browser (limited space)":
+         BACKEND==="artifact"?"saved in the chat":"not saving";}
+function paintBk(){const st=bkState();
+  $("health").className="hs"+(st.lvl==="warn"?" warn":st.lvl==="bad"?" bad":"");
+  $("hsT").textContent=st.t;$("hsS").textContent=st.s;
+  $("bkBtn").className="hbtn"+(st.lvl==="warn"?" stale":st.lvl==="bad"?" bad":"");
+  $("bkLabel").textContent=!ok?"At risk":"Backup";}
+function openBk(){paintBk();$("bkSheet").classList.add("on");}
+$("bkBtn").onclick=openBk;
+async function bundle(withShots){const out=[];
+  for(const t of T){const o={...t};if(withShots)o.screenshots=await getShots(t.id);out.push(o);}
+  return{app:"tape",schema:2,exported:new Date().toISOString(),images:!!withShots,
+    accounts:ACC,rules:RULES,settings:SET,trades:out};}
+async function markBacked(){lastBk=Date.now();await S.set(BK(),lastBk);paintBk();}
+function download(text,name){try{const b=new Blob([text],{type:"application/json"}),
+  u=URL.createObjectURL(b),a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),2000);return true;}catch(e){return false;}}
+$("copyBk").onclick=async()=>{const d=await bundle(false),s=JSON.stringify(d);
+  try{await navigator.clipboard.writeText(s);await markBacked();toast("Copied — paste it into your notes now");}
+  catch(e){$("showBox").value=s;$("showWrap").style.display="";toast("Clipboard blocked — copy the text below");}};
+$("showBk").onclick=async()=>{const d=await bundle(false);
+  $("showBox").value=JSON.stringify(d);$("showWrap").style.display="";$("showBox").select();
+  await markBacked();toast("Select all and copy");};
+$("expFull").onclick=async()=>{const d=await bundle(true);
+  if(download(JSON.stringify(d,null,2),"trading-journal-full-"+ymd()+".json")){await markBacked();toast("Downloaded");}
+  else toast("Download blocked — use Copy instead");};
+$("expLite").onclick=async()=>{const d=await bundle(false);
+  if(download(JSON.stringify(d,null,2),"trading-journal-"+ymd()+".json")){await markBacked();toast("Downloaded");}
+  else toast("Download blocked — use Copy instead");};
+$("segMode").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  $("segMode").querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");impMode=b.dataset.v;
+  $("modeNote").textContent=impMode==="merge"?"Merge keeps everything here and adds what's missing.":
+    "Replace wipes what's here and puts the backup in its place.";
+  const btn=$("doRestore");if(btn)btn.textContent=impMode==="replace"?"Replace everything":"Merge this in";});
+$("impBtn").onclick=()=>$("impFile").click();
+$("impFile").onchange=e=>{const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>{stageBk(r.result);e.target.value="";};r.readAsText(f);};
+$("pasteBtn").onclick=()=>{const w=$("pasteWrap");w.style.display=w.style.display==="none"?"":"none";};
+$("pasteGo").onclick=()=>stageBk($("pasteBox").value);
+function stageBk(text){let d;
+  try{d=JSON.parse(String(text||"").trim());}catch(e){toast("That isn't valid backup text");return;}
+  const trades=Array.isArray(d)?d:(d.trades||[]),accs=(d&&d.accounts)||[],rules=(d&&d.rules)||[];
+  if(!Array.isArray(trades)||(!trades.length&&!accs.length)){toast("No trades found");return;}
+  staged=d;
+  const dupes=trades.filter(t=>T.some(x=>x.id===t.id)).length;
+  $("prevSlot").innerHTML='<div class="prev"><div class="t">Backup read — nothing changed yet</div>'+
+    '<div class="l">'+trades.length+' trades'+(dupes?' ('+dupes+' already here)':'')+'<br>'+
+    accs.length+' accounts · '+rules.length+' rules'+(d.exported?'<br>made '+esc(String(d.exported).slice(0,10)):'')+
+    '</div><button class="btn go full" style="margin-top:14px" id="doRestore">'+
+    (impMode==="replace"?"Replace everything":"Merge this in")+'</button></div>';
+  $("doRestore").onclick=restore;}
+async function restore(){
+  if(!staged)return;
+  const d=staged,trades=Array.isArray(d)?d:(d.trades||[]);
+  if(impMode==="replace"&&!await ask("Replace everything?","This wipes what's here and puts the backup in its place.","Replace"))return;
+  if(impMode==="replace"){for(const t of T)await S.del(SK(t.id));T=[];ACC=[];RULES=[];SH.clear();cur=null;}
+  ((d&&d.accounts)||[]).forEach(a=>{if(a&&a.id&&!ACC.some(x=>x.id===a.id))ACC.push(a);});
+  ((d&&d.rules)||[]).forEach(r=>{if(r&&r.id&&!RULES.some(x=>x.id===r.id))RULES.push(r);});
+  if(d&&d.settings)SET={...d.settings,...SET};
+  let fb=null;
+  if(trades.some(t=>!t.acc||!ACC.some(a=>a.id===t.acc))){
+    fb=ACC.find(a=>a.id==="a_restored")||{id:"a_restored",name:"Restored",type:"Live",ccy:"GBP",start:0};
+    if(!ACC.some(a=>a.id===fb.id))ACC.push(fb);}
+  let added=0,skipped=0;
+  for(const t of trades){
+    if(!t||!t.id||T.some(x=>x.id===t.id)){skipped++;continue;}
+    const{screenshots,...meta}=t;
+    if(!meta.acc||!ACC.some(a=>a.id===meta.acc))meta.acc=fb?fb.id:(ACC[0]&&ACC[0].id);
+    if(!meta.date)meta.date=ymd();
+    if(!meta.ts)meta.ts=Date.parse(meta.date)||Date.now();
+    if(!meta.status)meta.status="closed";
+    if(typeof meta.pnl!=="number")meta.pnl=num(meta.pnl)||0;
+    meta.shots=(screenshots||[]).length;T.push(meta);added++;
+    if(screenshots&&screenshots.length){SH.set(meta.id,screenshots);await S.set(SK(meta.id),screenshots);}}
+  if(!cur||!ACC.some(a=>a.id===cur))cur=ACC.length?ACC[0].id:null;
+  await S.set(AK(),ACC);await S.set(TK(),T);await S.set(RK(),RULES);await S.set(CK(),cur);await S.set(GK(),SET);
+  staged=null;$("prevSlot").innerHTML="";$("pasteBox").value="";$("bkSheet").classList.remove("on");
+  T.forEach(t=>(t.tags||[]).forEach(x=>{if(!TAGS.includes(x)&&!custom.includes(x))custom.push(x);}));
+  tags();render();toast("Restored "+added+" trade"+(added===1?"":"s")+(skipped?" · "+skipped+" already here":""));}
+$("wipe").onclick=async()=>{
+  if(!await ask("Delete everything?","Every account, trade and rule goes. Copy a backup first.","Delete it all"))return;
+  for(const t of T)await S.del(SK(t.id));
+  T=[];ACC=[];RULES=[];EVENTS=[];SH.clear();cur=null;
+  await S.set(AK(),[]);await S.set(TK(),[]);await S.set(RK(),[]);await S.set(EK(),[]);await S.del(CK());
+  $("bkSheet").classList.remove("on");render();toast("Everything deleted");};
+
+/* ═══ RENDER ═══ */
+function render(){
+  const a=acc();
+  $("pnlLabel").textContent="P&L "+sym();
+  drawRules();drawBrk();paintBk();tvPaint();syPaint();paintMe();fillSessions();fillInds();
+  $("s-limit").value=SET.limit!=null?SET.limit:"";
+  $("s-loss").value=SET.loss!=null?SET.loss:"";
+  if(!a){
+    $("acName").textContent="No account";$("acBal").textContent="Tap to create one";
+    $("acBadge").style.display="none";
+    $("todayV").textContent="—";$("todayS").textContent="Create an account to get started";
+    $("todayStats").innerHTML="";$("liveCard").style.display="none";
+    chart();calendar();listView();lab();drawInbox();return;}
+  const L=closed(),net=L.reduce((s,t)=>s+(t.pnl||0),0),bal=(a.start||0)+net;
+  $("acName").textContent=a.name;
+  $("acBal").textContent=fm(bal)+" · "+mine().length+" trade"+(mine().length===1?"":"s")+
+    (openT().length?" · "+openT().length+" open":"");
+  const bd=$("acBadge");bd.style.display="";bd.textContent=(a.type||"Live").toUpperCase();
+  bd.className="badge "+(a.type==="Demo"?"demo":"live");
+  today();chart();calendar();listView();lab();}
+
+/* ═══ BOOT ═══ */
+async function bootData(){
+  $("i-date").value=ymd();
+  ACC=await S.get(AK())||[];T=await S.get(TK())||[];RULES=await S.get(RK())||[];
+  EVENTS=await S.get(EK())||[];SET=await S.get(GK())||{};INDS=await S.get(IK())||[];
+  cur=await S.get(CK());lastBk=await S.get(BK());GRAVE=await S.get(GVK())||{};
+
+  /* first sign-in for the founder adopts any journal from before profiles existed */
+  if(isFounder()&&!T.length&&!ACC.length){
+    const oldA=await S.get("tape3:accounts"),oldT=await S.get("tape3:trades");
+    if((Array.isArray(oldT)&&oldT.length)||(Array.isArray(oldA)&&oldA.length)){
+      ACC=oldA||[];T=oldT||[];
+      RULES=await S.get("tape3:rules")||[];SET=await S.get("tape3:settings")||{};
+      cur=await S.get("tape3:cur");lastBk=await S.get("tape3:lastBackup");
+      for(const t of T){const s=await S.get("tape3:shots:"+t.id);if(s)await S.set(SK(t.id),s);}
+      await S.set(AK(),ACC);await S.set(TK(),T);await S.set(RK(),RULES);
+      await S.set(GK(),SET);await S.set(CK(),cur);if(lastBk)await S.set(BK(),lastBk);
+      setTimeout(()=>toast("Brought your existing journal across"),700);
+    }
+  }
+
+  T.forEach(t=>{
+    if(typeof t.pnl!=="number")t.pnl=num(t.pnl)||0;
+    if(!t.ts)t.ts=Date.parse(t.date)||Date.now();
+    if(!t.status)t.status="closed";
+    if(!t.source)t.source="manual";
+    if(t.fromInd===undefined)t.fromInd=!!(t.indicator||t.source==="tradingview");
+    if(t.indicator===undefined)t.indicator=t.source==="tradingview"?(t.model||"TradingView alert"):"";
+    if(t.indicator&&!INDS.includes(t.indicator))INDS.push(t.indicator);});
+  if(INDS.length)await saveInds();
+
+  if(!cur||!ACC.some(a=>a.id===cur))cur=ACC.length?ACC[0].id:null;
+  T.forEach(t=>(t.tags||[]).forEach(x=>{if(!TAGS.includes(x)&&!custom.includes(x))custom.push(x);}));
+  T.forEach(t=>{if(!t.updatedAt)t.updatedAt=t.ts||Date.now();});
+  ACC.forEach(a=>{if(!a.updatedAt)a.updatedAt=Date.now();});
+  RULES.forEach(r=>{if(!r.updatedAt)r.updatedAt=Date.now();});
+  tags();fillSessions();startPoll();syFill();startSync();render();
+  if(SET.sync)syncNow(false);
+  if(!ACC.length)setTimeout(()=>{drawAcList();$("acSheet").classList.add("on");},500);
+  if(!ok)setTimeout(()=>toast("This browser is blocking storage — copy a backup before closing"),900);
+}
+
+(async function(){
+  await S.init();
+  await loadUsers();
+  const sessionId=await S.get(SESK);
+  const remembered=sessionId&&USERS.find(u=>u.id===sessionId);
+  if(remembered){
+    ME=remembered;NS="u_"+remembered.id+":";
+    if(ME.role==="founder"&&ME.key&&!await unlockLab(ME.key)){ME.role="user";ME.key=null;await saveUsers();}
+    await bootData();}
+  else{$("gate").classList.add("on");document.body.classList.add("gated");drawGate();}
+})();
+</script>
+</body>
+</html>
